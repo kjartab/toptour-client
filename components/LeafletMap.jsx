@@ -20,55 +20,34 @@ L.Icon.Default.imagePath = 'bundles/images/';
 
 var LeafletMap = React.createClass({
 
-    getInitialState: function () {
-        return {
-            selectedBrewery: null
-        };
-    },
-
     componentDidMount: function () {
-        var map = createMap(ReactDOM.findDOMNode(this));
+        var map = new L.map(this.refs.map, {zoomControl: false}).setView([61.3999272955946,5.7503078840252], 12);
 
-        // var breweriesLayer = L.geoJson(this.state.breweries, {
-        //     pointToLayer: function (feature, latlng) {
-        //         return L.marker(latlng);
-        //         }
-        // }).addTo(map);
-
-        // // start the map in South-East England
-        // map.fitBounds(breweriesLayer.getBounds());
-        
-        // breweriesLayer.on('click', this.clicked, this);
+        L.tileLayer('http://www.webatlas.no/maptiles/tiles/webatlas-gray-vektor/wa_grid/{z}/{x}/{y}.png', {
+            maxZoom: 20,
+            zIndex: 0,
+            attribution: '<a target=_blank href="http://www.norkart.no">Norkart AS</a>'
+        }).addTo(map);
         this.map = map;
-        // this.breweriesLayer = breweriesLayer;
-        // this.allLayers = breweriesLayer.getLayers();
     },
-
 
 
     componentDidUpdate: function () {
-        if (this.selectedFeature) {
-            if (this.selectedFeature.setIcon) {
-                this.selectedFeature.setIcon(new L.Icon.Default());
-                this.selectedFeature.setZIndexOffset(0);
-            }
+        console.log(this.props, "map");
+        console.log(this.props.selectedToptour);
+        // this.layer.clearLayers();
+        // this.layer.addLayer(this.props.selectedToptour.geojson);
+        if (this.layer) {
+        this.layer.clearLayers();
+            
         }
-        var newSelected = _.find(this.breweriesLayer.getLayers(), function (layer) {
-            return (layer.feature.id === this.state.selectedBrewery);
-        }, this);
-        if (newSelected) {
-            if (newSelected.setIcon) {
-                newSelected.setIcon(selectedIcon);
-                newSelected.setZIndexOffset(100);
-            }
-        }
-        this.selectedFeature = newSelected;
+        this.layer = L.geoJson(this.props.selectedToptour.geojson).addTo(this.map);
+        this.map.fitBounds(this.layer.getBounds());
     },
 
-    render: function () {
+    render() {
         return (
-            <div className="fullscreenmap">
-
+            <div ref="map" className="fullscreenmap">
             </div>
         );
     }

@@ -8,6 +8,56 @@ var _ = require('underscore');
 
 require('bootstrap_css');
 
-ReactDOM.render(<LeafletMap />, document.getElementById('map'));
 
-ReactDOM.render(<Search />, document.getElementById('search-container'));
+// ReactDOM.render(<LeafletMap selectedToptour={selectedToptour}/>, document.getElementById('map'));
+
+// ReactDOM.render(<Search selectedToptour={selectedToptour} setSelectedToptour={setSelectedToptour}/>, document.getElementById('search-container'));
+
+var App = React.createClass({
+
+    getInitialState() {
+        return {
+            selectedToptour : null
+        }
+    },
+
+    updateSelectedToptour(toptour) {
+        this.setState({selectedToptour : toptour});
+    },
+
+    render() {
+        return (<div>
+            <LeafletMap selectedToptour={this.state.selectedToptour}/>
+            <Search setSelectedToptour={this.updateSelectedToptour}/>
+        </div>);
+    }
+
+});
+
+
+// class Application extends React.Component {
+//     constructor () {
+//         super();
+//         this.state = {
+//             selectedToptour : null
+//         };
+//     }
+
+//     updateSelectedToptour(toptour) {
+//         console.log(this);
+//         setState({selectedToptour: toptour});
+//     }
+
+
+//     render() {
+//         return (
+//             <div>
+//                 <LeafletMap selectedToptour={this.state.selectedToptour}/>
+//                 <Search setSelectedToptour={this.updateSelectedToptour}/>
+//             </div>
+//         );
+//     }
+// }
+
+
+ReactDOM.render(<App />, document.getElementById('wrapper'));

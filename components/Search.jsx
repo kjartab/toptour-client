@@ -1,6 +1,7 @@
 'use strict';
 var React = require('react');
 var ReactDOM = require('react-dom');
+var $ = require('jquery');  
 var _ = require('underscore');
 
 
@@ -9,14 +10,11 @@ var _ = require('underscore');
 var SearchInput = React.createClass({
 
     handleChange: function(event) {
-        console.log(event.target.value);
-        console.log(this);
         this.props.handleInputChange(event.target.value);
         // this.setState({value: event.target.value});
     },
 
     render: function() {
-        console.log(this.props);
         return (
             <input
                 type="text"
@@ -28,12 +26,51 @@ var SearchInput = React.createClass({
 
 });
 
-var SearchResults = React.createClass({
+var SearchResultElement = React.createClass({
+
+    onClick: function(e) {
+        this.props.selectResult(this.props.hit._source);
+    },
 
     render: function() {
         return (
             <div>
-                <p>test</p>
+                <a onClick={this.onClick}>{this.props.hit._source.navn}</a>
+            </div>
+            );
+    }
+
+})
+
+var SearchResultList = React.createClass({
+
+
+
+    selectSuggestion(id) {
+
+    },
+
+
+    render: function() {
+
+        var res = this.props.searchResults;
+        var hits = [];
+        if (res) {
+            hits = res.hits.hits;
+        } 
+        var resultElements = _.map(hits, function(hit) {
+
+            return <SearchResultElement 
+                        key={hit._id}
+                        hit={hit}
+                        selectResult={this.props.selectToptour}
+                    />;
+        }, this);
+    
+        return (            
+            <div>
+                <p>pp {this.props.selectedToptour}</p>
+                {resultElements}
             </div>
         );
     }
@@ -44,33 +81,50 @@ var Search = React.createClass({
 
     getInitialState() {
         return { 
-            currentValue : "e"
+            currentValue : "..",
+            searchResults: null,
+            suggestions: null
         }
     },
 
-
-    get() {
-        
+    updateResults(data) {
+        this.setState({searchResults: data })
     },
 
+    search(queryText) {
+        $.ajax({
+            context: this,
+                method : 'GET',
+            url: "http://localhost:9200/toptour/_search?q="+queryText,
+            success: function(data) {
+                this.updateResults(data);
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        }, this);
+    },
+
+
     handleInputChange: function(value) {
-        console.log(value);
         this.setState({currentValue: value});
-        this.suggest(value);
-        console.log(this.state);
+        this.search(value);
     },
 
     render: function() {
+        console.log(this.props);
         return (
-            <div>
-            <SearchInput
-                handleInputChange = {this.handleInputChange}
-                currentValue = {this.state.currentValue}
-            />
-            <SearchResults
-                suggestions = {this.state.suggestions}
-                searchResults = {this.state.searchResults}
-            />
+            <div className="search-container">
+                <SearchInput
+                    handleInputChange = {this.handleInputChange}
+                    currentValue = {this.state.currentValue}
+                />
+                <SearchResultList
+                    selectToptour = {this.props.setSelectedToptour}
+                    selectedToptour = {this.props.selectedToptour}
+                    suggestions = {this.state.suggestions}
+                    searchResults = {this.state.searchResults}
+                />
             </div>
         );
     }

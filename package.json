@@ -16,6 +16,7 @@
     "bootstrap": "^3.3.6",
     "css-loader": "^0.23.1",
     "file-loader": "^0.8.5",
+    "jquery": "^2.2.2",
     "leaflet": "^0.7.7",
     "react": "^0.14.8",
     "react-dom": "^0.14.8",
