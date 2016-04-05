@@ -34,8 +34,8 @@ var SearchResultElement = React.createClass({
 
     render: function() {
         return (
-            <div>
-                <a onClick={this.onClick}>{this.props.hit._source.navn}</a>
+            <div className="search-result">
+                <li onClick={this.onClick}>{this.props.hit._source.navn}</li>
             </div>
             );
     }
@@ -68,10 +68,9 @@ var SearchResultList = React.createClass({
         }, this);
     
         return (            
-            <div>
-                <p>pp {this.props.selectedToptour}</p>
+            <ul>
                 {resultElements}
-            </div>
+            </ul>
         );
     }
 

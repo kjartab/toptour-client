@@ -16,6 +16,13 @@
     background-color:white;
 }
 
+.search-result {
+    list-style-type: none;
+    background-color:white;
+}
+
+
+
 .search-container {
     position: absolute;
     top: 10px;
@@ -23,6 +30,19 @@
     width:300px;
     height:40px;
     background-color:white;
+}
+
+.search-container ul {
+    padding:0;
+}
+
+.search-container li {
+
+}
+
+.search-container li:hover {
+    background-color: #efefef;
+    cursor:pointer;
 }
 
 .list {
