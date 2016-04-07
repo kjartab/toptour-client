@@ -24,7 +24,6 @@ module.exports = {
     },
     module: {
         loaders: [
-            {test: /Cesium\.js$/, loader: 'script'},
             {test: /\.css$/, loader: 'style-loader!css-loader'},
             {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
             {test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000'},

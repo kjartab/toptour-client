@@ -15,30 +15,39 @@ var createMap = require('./createMap');
 
 L.Icon.Default.imagePath = 'bundles/images/';
 
+
+
+
 var LeafletMap = React.createClass({
 
-
-    shouldComponentUpdate() {
-        return false;
-    },
-
     componentDidMount: function () {
-        this.viewer = new CesiumViewer(this.refs.cesium, cesiumViewerOptions);
+        var map = new L.map(this.refs.map, {zoomControl: false}).setView([61.3999272955946,5.7503078840252], 12);
+
+        L.tileLayer('http://www.webatlas.no/maptiles/tiles/webatlas-gray-vektor/wa_grid/{z}/{x}/{y}.png', {
+            maxZoom: 20,
+            zIndex: 0,
+            attribution: '<a target=_blank href="http://www.norkart.no">Norkart AS</a>'
+        }).addTo(map);
+        this.map = map;
     },
+
 
     componentDidUpdate: function () {
-
+        console.log(this.props, "map");
+        console.log(this.props.selectedToptour);
+        // this.layer.clearLayers();
+        // this.layer.addLayer(this.props.selectedToptour.geojson);
         if (this.layer) {
-            this.layer.clearLayers();
+        this.layer.clearLayers();
+            
         }
-
         this.layer = L.geoJson(this.props.selectedToptour.geojson).addTo(this.map);
         this.map.fitBounds(this.layer.getBounds());
     },
 
     render() {
         return (
-            <div ref="cesium" className="fullscreenmap">
+            <div ref="map" className="fullscreenmap">
             </div>
         );
     }
