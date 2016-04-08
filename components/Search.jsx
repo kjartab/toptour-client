@@ -90,11 +90,26 @@ var Search = React.createClass({
         this.setState({searchResults: data })
     },
 
-    search(queryText) {
+        search(queryText) {
+        var query = {
+            query : { 
+                bool: { 
+                    must: [
+                        { "match": { "_all":  queryText  }}  
+                    ],
+                    filter: [ 
+                        { "term": { "tags": "skitur" }} 
+                    ]
+                }
+            }
+        }
+
+
         $.ajax({
             context: this,
-                method : 'GET',
-            url: "http://localhost:9200/toptour/_search?q="+queryText,
+            method : 'POST',
+            data : JSON.stringify(query),
+            url: "http://localhost:9200/toptour/_search",
             success: function(data) {
                 this.updateResults(data);
             },
