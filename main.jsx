@@ -15,10 +15,12 @@ require('bootstrap_css');
 
 // ReactDOM.render(<Search selectedToptour={selectedToptour} setSelectedToptour={setSelectedToptour}/>, document.getElementById('search-container'));
 
+
 var App = React.createClass({
 
     getInitialState: function() {
         return {
+            searchServerUrl : config.searchServerUrl,
             selectedToptour : null,
             visible: false
         }
@@ -36,7 +38,10 @@ var App = React.createClass({
         return (<div>
             <LeafletMap selectedToptour={this.state.selectedToptour}/>
             <SideBar selectedToptour={this.state.selectedToptour}/>
-            <Search setSelectedToptour={this.updateSelectedToptour}/>
+            <Search 
+                setSelectedToptour={this.updateSelectedToptour} 
+                searchServerUrl={this.state.searchServerUrl}
+            />
             {
                 this.state.selectedToptour && this.state.visible ?
                 <ToptourView 

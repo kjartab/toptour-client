@@ -110,7 +110,7 @@ var Search = React.createClass({
             context: this,
             method : 'POST',
             data : JSON.stringify(query),
-            url: "http://localhost:9200/toptour/_search",
+            url: this.props.searchServerUrl + "/toptour/_search",
             success: function(data) {
                 this.updateResults(data);
             },
