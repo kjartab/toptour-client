@@ -45,7 +45,7 @@ var LeafletMap = React.createClass({
         this.map.fitBounds(this.layer.getBounds());
     },
 
-    render() {
+    render: function() {
         return (
             <div ref="map" className="fullscreenmap">
             </div>

@@ -47,7 +47,7 @@ var SearchResultList = React.createClass({
 
 
 
-    selectSuggestion(id) {
+    selectSuggestion: function(id) {
 
     },
 
@@ -79,7 +79,7 @@ var SearchResultList = React.createClass({
 
 var Search = React.createClass({
 
-    getInitialState() {
+    getInitialState: function() {
         return { 
             currentValue : "..",
             searchResults: null,
@@ -87,11 +87,11 @@ var Search = React.createClass({
         }
     },
 
-    updateResults(data) {
+    updateResults: function(data) {
         this.setState({searchResults: data })
     },
 
-        search(queryText) {
+    search: function(queryText) {
         var query = {
             query : { 
                 bool: { 

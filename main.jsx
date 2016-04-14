@@ -17,22 +17,22 @@ require('bootstrap_css');
 
 var App = React.createClass({
 
-    getInitialState() {
+    getInitialState: function() {
         return {
             selectedToptour : null,
             visible: false
         }
     },
 
-    updateSelectedToptour(toptour) {
+    updateSelectedToptour: function(toptour) {
         this.setState({selectedToptour : toptour, visible: true});
     },
 
-    deselectToptour() {
+    deselectToptour: function() {
         this.setState({selectedToptour : null, visible: false});
     },
 
-    render() {
+    render: function() {
         return (<div>
             <LeafletMap selectedToptour={this.state.selectedToptour}/>
             <SideBar selectedToptour={this.state.selectedToptour}/>
