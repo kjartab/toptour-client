@@ -1,0 +1,12 @@
+---
+- name: toptour_client
+  hosts: toptour_servers
+  sudo: yes
+  remote_user: ansible
+  vars:
+    project_name: toptour
+    search_server: www.search.kartan.no
+  roles:
+    # - elasticsearch 
+    # - node
+    - deploy_app

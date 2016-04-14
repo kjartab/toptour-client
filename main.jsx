@@ -4,6 +4,8 @@ var ReactDOM = require('react-dom');
 
 var LeafletMap = require('./components/LeafletMap.jsx');
 var Search = require('./components/Search.jsx');
+var SideBar = require('./components/SideBar.jsx');
+var ToptourView = require('./components/ToptourView.jsx');
 var _ = require('underscore');
 
 require('bootstrap_css');
@@ -17,18 +19,32 @@ var App = React.createClass({
 
     getInitialState() {
         return {
-            selectedToptour : null
+            selectedToptour : null,
+            visible: false
         }
     },
 
     updateSelectedToptour(toptour) {
-        this.setState({selectedToptour : toptour});
+        this.setState({selectedToptour : toptour, visible: true});
+    },
+
+    deselectToptour() {
+        this.setState({selectedToptour : null, visible: false});
     },
 
     render() {
         return (<div>
             <LeafletMap selectedToptour={this.state.selectedToptour}/>
+            <SideBar selectedToptour={this.state.selectedToptour}/>
             <Search setSelectedToptour={this.updateSelectedToptour}/>
+            {
+                this.state.selectedToptour && this.state.visible ?
+                <ToptourView 
+                    deselectToptour={this.deselectToptour}
+                    selectedToptour={this.state.selectedToptour}/>
+                : null
+            }
+
         </div>);
     }
 

@@ -29,6 +29,7 @@ var SearchInput = React.createClass({
 var SearchResultElement = React.createClass({
 
     onClick: function(e) {
+        console.log("click");
         this.props.selectResult(this.props.hit._source);
     },
 
@@ -98,7 +99,7 @@ var Search = React.createClass({
                         { "match": { "_all":  queryText  }}  
                     ],
                     filter: [ 
-                        { "term": { "tags": "skitur" }} 
+                        { "terms": { "tags": ["skitur"] }} 
                     ]
                 }
             }
@@ -124,11 +125,17 @@ var Search = React.createClass({
         this.setState({currentValue: value});
         this.search(value);
     },
+    
+    onMouseOut: function() {
+    },
 
     render: function() {
-        console.log(this.props);
+
         return (
-            <div className="search-container">
+            <div 
+
+                onMouseOut={this.onMouseOut}
+                className="search-container">
                 <SearchInput
                     handleInputChange = {this.handleInputChange}
                     currentValue = {this.state.currentValue}

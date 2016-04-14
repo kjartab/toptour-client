@@ -1,10 +1,16 @@
 .fullscreenmap {
     position: fixed;
     top: 0;
-    left: 0;
+    left: 50px;
     right: 0;
     bottom: 0;
     background: #ddd;
+}
+
+.sidebar {
+    width:50px;
+    height: 100%;
+    background-color: white;
 }
 
 .test {
@@ -21,15 +27,29 @@
     background-color:white;
 }
 
-
-
 .search-container {
     position: absolute;
     top: 10px;
-    left: 10px;
+    padding-left:50px;
     width:300px;
     height:40px;
     background-color:white;
+}
+
+.toptour-view {
+    background-color:white;
+    width:100%;
+    height:auto;
+    position:absolute;
+    bottom:0;
+    padding-left:50px;
+    max-height:30%;
+    overflow-y:auto;
+    display: block;
+}
+
+.hidden  {
+    display:none;
 }
 
 .search-container ul {
