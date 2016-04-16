@@ -18,6 +18,7 @@ var SearchInput = React.createClass({
         return (
             <input
                 type="text"
+                placeholder="Søk etter toppturer"
                 value={this.props.currentValue}
                 onChange={this.handleChange}
             />
@@ -81,7 +82,7 @@ var Search = React.createClass({
 
     getInitialState: function() {
         return { 
-            currentValue : "..",
+            currentValue : "",
             searchResults: null,
             suggestions: null
         }
@@ -137,6 +138,7 @@ var Search = React.createClass({
                 onMouseOut={this.onMouseOut}
                 className="search-container">
                 <SearchInput
+
                     handleInputChange = {this.handleInputChange}
                     currentValue = {this.state.currentValue}
                 />

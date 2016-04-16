@@ -1,3 +1,3 @@
 var config = {
-    searchServerUrl : "http://localhost:9200"
+    searchServerUrl : "http://10.0.0.116:9200"
 }

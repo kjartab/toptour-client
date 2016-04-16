@@ -4,6 +4,24 @@ var ReactDOM = require('react-dom');
 var $ = require('jquery');  
 var _ = require('underscore');
 
+
+var Button = React.createClass({
+
+    onClick: function(e) {
+        this.props.handleClick(this.props.menuId);
+    },
+
+    render: function () {
+    return (
+      <button
+        className="btn btn-default"
+        // style={buttonStyle}
+        onClick={this.onClick}>{this.props.label}</button>
+    );
+    }
+});
+
+
 var SideBar = React.createClass({
 
     getInitialState: function() {
@@ -12,22 +30,30 @@ var SideBar = React.createClass({
         }
     },
 
+    clicked: function(e) {
+        console.log("sidebar ", e);
+        this.props.selectMenu(e);
+    },
+
+
+
+
     render: function() {
             if (this.props.selectedToptour) {
                 return (
                     <div className="sidebar">
-                        <Button onClick={clicked} >Export</Button>
-                        <Button onClick={clicked} >Export</Button>
-                        <Button onClick={clicked} >Export</Button>
-                    </div>     
+                        <Button menuId="selected-back" handleClick={this.clicked} label="<-"></Button>
+                        <Button menuId="selected-map" handleClick={this.clicked} label="maps"></Button>
+                        <Button menuId="selected-test" handleClick={this.clicked} label="info"></Button>
+                    </div>
                 );
             }
             return(
             <div className="sidebar">
-                <div>search</div>   
-                <div>analyse</div>
-                <div>maps</div>
-                <div>about</div>
+                <Button menuId="search" handleClick={this.clicked} label="search"></Button>
+                <Button menuId="maps" handleClick={this.clicked} label="maps"></Button>
+                <Button menuId="news" handleClick={this.clicked} label="news"></Button>
+                <Button menuId="about" handleClick={this.clicked} label="about"></Button>
             </div>);
     }
 

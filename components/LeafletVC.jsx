@@ -18,7 +18,7 @@ L.Icon.Default.imagePath = 'bundles/images/';
 
 
 
-var LeafletMap = React.createClass({
+var LeafletVC = React.createClass({
 
     componentDidMount: function () {
         var map = new L.map(this.refs.map, {zoomControl: false}).setView([61.3999272955946,5.7503078840252], 12);
@@ -32,17 +32,25 @@ var LeafletMap = React.createClass({
     },
 
 
-    componentDidUpdate: function () {
-        console.log(this.props, "map");
-        console.log(this.props.selectedToptour);
+    componentDidUpdate: function (prevProps, prevState) {
+        // console.log(this.props, "map");
+        // console.log(this.props.selectedToptour);
         // this.layer.clearLayers();
         // this.layer.addLayer(this.props.selectedToptour.geojson);
-        if (this.layer) {
-        this.layer.clearLayers();
+        
+        if (prevProps.selectedToptour != this.props.selectedToptour) {
+            console.log("new")
+            if (this.layer) {
+                    this.layer.clearLayers();
+                }
+            if (this.props.selectedToptour) {
+
+                this.layer = L.geoJson(this.props.selectedToptour.geojson).addTo(this.map);
+                this.map.fitBounds(this.layer.getBounds());
+            }
             
+
         }
-        this.layer = L.geoJson(this.props.selectedToptour.geojson).addTo(this.map);
-        this.map.fitBounds(this.layer.getBounds());
     },
 
     render: function() {
@@ -53,4 +61,4 @@ var LeafletMap = React.createClass({
     }
 });
 
-module.exports = LeafletMap;
+module.exports = LeafletVC;
