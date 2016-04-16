@@ -86,7 +86,7 @@ var App = React.createClass({
         this.setState({selectedToptour : null, visible: false});
     },
 
-    getActiveMenu() {
+    getActiveMenu: function() {
 
         switch (this.state.selectedMenu) {
             case "search":
