@@ -2,11 +2,13 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var LeafletVC = require('./components/LeafletVC.jsx');
+var LeafletVC = require('./components/GraphicVC/LeafletVC.jsx');
+var CesiumVC = require('./components/GraphicVC/CesiumVC.jsx');
 var Search = require('./components/Search.jsx');
 var SideBar = require('./components/SideBar.jsx');
 var ToptourView = require('./components/ToptourView.jsx');
 var _ = require('underscore');
+require('./style/map.css');
 
 // require('bootstrap_css');
 
@@ -27,6 +29,15 @@ var ToptourHeader = React.createClass({
 
 });
 
+var ToptourInfoMenu = React.createClass({
+    render: function() {
+        return(<div className="menu">
+                <h3>{this.props.selectedToptour.navn}</h3>
+                <div>{this.props.selectedToptour.beskrivelse}</div>
+            </div>);
+    }
+
+});
 
 var NewsMenu = React.createClass({
     render: function() {
@@ -50,15 +61,22 @@ var MapMenu = React.createClass({
         return (
             <div className="menu">
                 <h3>Kartlag</h3>
-                <p>OSM</p>
-                <p>Norkart</p>
+
+                <form action="">
+                  <input type="radio" name="mapType" value="leaflet"/> Norkart  <br/>
+                  <input type="radio" name="mapType" value="cesium"/> OSM
+                </form>
+
                 
                 <h3>Karttype</h3>
-                <p>Leaflet</p>
-                <p>Cesium</p>
-                <p>Mapbox</p>
-                <p>Mapzen</p>
-            {this.props.mapType}
+
+                <form action="">
+                  <input type="radio" name="mapType" value="leaflet"/> Leaflet<br/>
+                  <input type="radio" name="mapType" value="cesium"/> Cesium<br/>
+                  <input type="radio" name="mapType" value="mapbox"/> Mapbox<br/>
+                  <input type="radio" name="mapType" value="mapzen"/> Mapzen
+                </form>
+                {this.props.mapType}
             </div>
             );
     }
@@ -106,7 +124,12 @@ var App = React.createClass({
                     <MapMenu
                         mapType={this.props.mapType}
                     />);
-
+            case "selected-info":
+            console.log("SELECTED INFO!!!");
+                return (<ToptourInfoMenu
+                        selectedToptour={this.state.selectedToptour}
+                        />
+                    );
             case "news":
                 return(
                     <NewsMenu
@@ -144,22 +167,22 @@ var App = React.createClass({
             
     },
 
-    getMapView: function(mapType) {
-        switch(mapType) {
-            case "leaflet":
-                console.log("render map", this.state.selectedToptour);
-                return(<LeafletVC selectedToptour={this.state.selectedToptour}/>);
+    // getMapView: function(mapType) {
+    //     switch(mapType) {
+    //         case "leaflet":
+    //             console.log("render map", this.state.selectedToptour);
+    //             return(<LeafletVC selectedToptour={this.state.selectedToptour}/>);
 
-            case "openlayers":
-                return null;
-                // return(<OpenlayersVC selectedToptour={this.state.selectedToptour}/>);
+    //         case "openlayers":
+    //             return null;
+    //             // return(<OpenlayersVC selectedToptour={this.state.selectedToptour}/>);
 
-            case "cesium":
-                return null;
-                // return(<CesiumVC selectedToptour={this.state.selectedToptour}/>);
-        }
+    //         case "cesium":
+    //             return null;
+    //             // return(<CesiumVC selectedToptour={this.state.selectedToptour}/>);
+    //     }
         
-    },
+    // },
 
     selectMenu: function(menuId) {
         console.log(menuId);
@@ -178,10 +201,11 @@ var App = React.createClass({
 
         var menu = this.getMenu();
         console.log(this.state.selectedMenu);
-        var map = this.getMapView();
+        // var map = this.getMapView();
 
         return (<div className="wrapper">
-            <LeafletVC selectedToptour={this.state.selectedToptour}/>
+            // <LeafletVC selectedToptour={this.state.selectedToptour}/>
+            <CesiumVC selectedToptour={this.state.selectedToptour}/>
             <SideBar
                 selectedToptour={this.state.selectedToptour}
                 deselectToptour={this.deselectToptour}

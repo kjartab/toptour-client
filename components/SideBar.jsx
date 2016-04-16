@@ -44,7 +44,7 @@ var SideBar = React.createClass({
                     <div className="sidebar">
                         <Button menuId="selected-back" handleClick={this.clicked} label="<-"></Button>
                         <Button menuId="selected-map" handleClick={this.clicked} label="maps"></Button>
-                        <Button menuId="selected-test" handleClick={this.clicked} label="info"></Button>
+                        <Button menuId="selected-info" handleClick={this.clicked} label="info"></Button>
                     </div>
                 );
             }
