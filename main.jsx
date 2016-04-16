@@ -35,7 +35,7 @@ var App = React.createClass({
     },
 
     render: function() {
-        return (<div>
+        return (<div className="wrapper">
             <LeafletMap selectedToptour={this.state.selectedToptour}/>
             <SideBar selectedToptour={this.state.selectedToptour}/>
             <Search 

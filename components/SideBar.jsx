@@ -6,12 +6,29 @@ var _ = require('underscore');
 
 var SideBar = React.createClass({
 
+    getInitialState: function() {
+        return {
 
+        }
+    },
 
     render: function() {
-        return (<div className="sidebar">
-            <p>tesst</p>
-        </div>);
+            if (this.props.selectedToptour) {
+                return (
+                    <div className="sidebar">
+                        <Button onClick={clicked} >Export</Button>
+                        <Button onClick={clicked} >Export</Button>
+                        <Button onClick={clicked} >Export</Button>
+                    </div>     
+                );
+            }
+            return(
+            <div className="sidebar">
+                <div>search</div>   
+                <div>analyse</div>
+                <div>maps</div>
+                <div>about</div>
+            </div>);
     }
 
 });
