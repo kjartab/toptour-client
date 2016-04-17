@@ -17,6 +17,7 @@ module.exports = {
             cesium_js: __dirname + '/node_modules/cesium/Build/Cesium/Cesium.js',
             cesium_widgets_css: __dirname + '/node_modules/cesium/Build/Cesium/Widgets/widgets.css',
             cesium_assets: __dirname + '/node_modules/cesium/Build/Cesium/Assets',            
+            openlayers_css: __dirname + '/node_modules/openlayers/dist/ol.css',
             leaflet_css: __dirname + '/node_modules/leaflet/dist/leaflet.css',
             leaflet_marker: __dirname + '/node_modules/leaflet/dist/images/marker-icon.png',
             leaflet_marker_green: __dirname + '/images/marker-icon-green.png',

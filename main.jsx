@@ -4,6 +4,7 @@ var ReactDOM = require('react-dom');
 
 var LeafletVC = require('./components/GraphicVC/LeafletVC.jsx');
 var CesiumVC = require('./components/GraphicVC/CesiumVC.jsx');
+var OpenlayersVC = require('./components/GraphicVC/OpenlayersVC.jsx');
 var Search = require('./components/Search.jsx');
 var SideBar = require('./components/SideBar.jsx');
 var ToptourView = require('./components/ToptourView.jsx');
@@ -55,31 +56,91 @@ var AboutMenu = React.createClass({
     }
 });
 
-var MapMenu = React.createClass({
+
+var GraphicViewControllerRadioButton = React.createClass({
+
+
+    onChange: function(e) {
+        console.log(e);
+        this.props.onChange(this.props.graphicVCId);
+    },
 
     render: function() {
-        return (
-            <div className="menu">
-                <h3>Kartlag</h3>
-
-                <form action="">
-                  <input type="radio" name="mapType" value="leaflet"/> Norkart  <br/>
-                  <input type="radio" name="mapType" value="cesium"/> OSM
-                </form>
-
-                
-                <h3>Karttype</h3>
-
-                <form action="">
-                  <input type="radio" name="mapType" value="leaflet"/> Leaflet<br/>
-                  <input type="radio" name="mapType" value="cesium"/> Cesium<br/>
-                  <input type="radio" name="mapType" value="mapbox"/> Mapbox<br/>
-                  <input type="radio" name="mapType" value="mapzen"/> Mapzen
-                </form>
-                {this.props.mapType}
-            </div>
-            );
+        return <div >
+                    <input 
+                    type="radio" 
+                    onChange={this.onChange}
+                    name="graphicVCId" 
+                    value={this.props.graphicVCId}
+                /> {this.props.name}</div>
     }
+});
+
+
+var GraphicViewerControllerMenu = React.createClass({
+
+    onGraphicVCChanged: function(graphicVCId) {
+        // console.log(e);
+        // console.log("CLICK")
+        this.props.selectGraphicVCById(graphicVCId);
+    },
+
+
+    render:  function() {
+
+        var radios = _.map(this.props.graphicVCs, function(obj, key) {
+            return (<GraphicViewControllerRadioButton 
+                        key={key}
+                        graphicVCId={key}
+                        name={obj.name}
+                        onChange={this.onGraphicVCChanged} 
+                    />);
+        }, this);
+
+        return(<div className="menu">
+                    <h3>Karttype</h3>
+
+                    <form action="">
+                    {radios}
+                    
+                    </form>
+        </div>);
+    }
+
+    // ,
+
+    // render: function() {
+    //     return (
+    //         <div className="menu">
+
+    //             <h3>Karttype</h3>
+
+    //             <form action="">
+    //                 <input 
+    //                     type="radio" 
+    //                     name="graphicVCType" 
+    //                     onChange={this.onGraphicVCChanged} 
+    //                     value="leaflet"
+    //                 /> Leaflet<br/>
+
+    //                 <input 
+    //                     type="radio" 
+    //                     name="graphicVCType" 
+    //                     onChange={this.onGraphicVCChanged} 
+    //                     value="cesium"
+    //                 /> Cesium 
+    //             </form>
+
+    //             <h3>Kartlag</h3>
+
+    //             <form action="">
+    //                 <input type="radio" name="graphicVCType" value="leaflet"/> Norkart  <br/>
+    //                 <input type="radio" name="graphicVCType" value="cesium"/> OSM
+    //             </form>
+
+    //         </div>
+    //         );
+    // }
 
 });
 
@@ -87,13 +148,52 @@ var MapMenu = React.createClass({
 var App = React.createClass({
 
     getInitialState: function() {
+
+        var graphicVCs = {
+                "openlayers": {
+                    name: "Openlayers",
+                    selected : true
+                },  
+                "leaflet": {
+                    name: "Leaflet",
+                    selected : false
+                },  
+                "cesium": {
+                    name: "Cesium",
+                    selected: false
+                }
+            };
+
         return {
             searchServerUrl : config.searchServerUrl,
             selectedMenu: "search",
             selectedToptour : null,
             visible: false,
-            mapType: "leaflet"
+            graphicVCs: graphicVCs,
+            camera: null
         }
+    },
+
+    getSelectedGraphicVC: function() {
+        return _.find(state.graphicVCs, function(graphicVC) {
+            return graphicVC.selected === true;
+        });
+    },
+
+    selectGraphicVCById: function(graphicVCId) {
+
+        var graphicVCs = this.state.graphicVCs;
+        for (var key in graphicVCs) {
+            if (key === graphicVCId) {
+                graphicVCs[key].selected = true;
+            } else {
+                graphicVCs[key].selected = false;
+            }
+        }
+
+        this.setState({
+            graphicVCs : graphicVCs
+        });
     },
 
     updateSelectedToptour: function(toptour) {
@@ -115,17 +215,18 @@ var App = React.createClass({
 
             case "maps":
                 return (
-                    <MapMenu
-                        mapType={this.props.mapType}
+                    <GraphicViewerControllerMenu
+                        graphicVCs={this.state.graphicVCs}
+                        selectGraphicVCById={this.selectGraphicVCById}
                     />);
 
             case "selected-map":                
                 return (
-                    <MapMenu
-                        mapType={this.props.mapType}
+                    <GraphicViewerControllerMenu
+                        graphicVCs={this.state.graphicVCs}
+                        selectGraphicVCById={this.selectGraphicVCById}
                     />);
             case "selected-info":
-            console.log("SELECTED INFO!!!");
                 return (<ToptourInfoMenu
                         selectedToptour={this.state.selectedToptour}
                         />
@@ -167,31 +268,61 @@ var App = React.createClass({
             
     },
 
-    // getMapView: function(mapType) {
-    //     switch(mapType) {
-    //         case "leaflet":
-    //             console.log("render map", this.state.selectedToptour);
-    //             return(<LeafletVC selectedToptour={this.state.selectedToptour}/>);
+    updateCamera: function(camera) {
+        console.log(camera);
+        this.setState({camera : camera});
+    },
 
-    //         case "openlayers":
-    //             return null;
-    //             // return(<OpenlayersVC selectedToptour={this.state.selectedToptour}/>);
+    getGraphicVC: function() {
+        var selectedKey = null;
+        _.each(this.state.graphicVCs, function(graphicVC, key) {
+            if (graphicVC.selected === true) {
+                selectedKey = key
+            }
+        });
 
-    //         case "cesium":
-    //             return null;
-    //             // return(<CesiumVC selectedToptour={this.state.selectedToptour}/>);
-    //     }
+        switch(selectedKey) {
+            case "openlayers":
+                return <OpenlayersVC 
+                            selectedToptour={this.state.selectedToptour}
+                            addedLayers={this.state.addedLayers}
+                            updateCamera={this.updateCamera}
+                            camera={this.state.camera}
+                        />;
+                // return(<| selectedToptour={this.state.selectedToptour}/>);
+            case "leaflet":
+                <LeafletVC 
+                            selectedToptour={this.state.selectedToptour}                            
+                            addedLayers={this.state.addedLayers}
+                            updateCamera={this.updateCamera}
+                            camera={this.state.camera}
+                        />;
+
+            case "cesium":
+                return  <CesiumVC 
+                            selectedToptour={this.state.selectedToptour}
+                            addedLayers={this.state.addedLayers}
+                            updateCamera={this.updateCamera}
+                            camera={this.state.camera}
+                        />;
+
+            default:
+                return  <OpenlayersVC 
+                            selectedToptour={this.state.selectedToptour}                            
+                            addedLayers={this.state.addedLayers}
+                            updateCamera={this.updateCamera}
+                            camera={this.state.camera}
+                        />;
+        }
         
-    // },
+    },
 
     selectMenu: function(menuId) {
-        console.log(menuId);
-        if (menuId === 'selected-back') {
 
+        if (menuId === 'selected-back') {
             this.deselectToptour();
             this.setState({selectedMenu : "search"});
         } else {
-            console.log("TIHS MENU " , menuId)
             this.setState({selectedMenu : menuId});
         }
 
@@ -200,16 +331,15 @@ var App = React.createClass({
     render: function() {
 
         var menu = this.getMenu();
-        console.log(this.state.selectedMenu);
-        // var map = this.getMapView();
+        var graphicVC = this.getGraphicVC();
 
         return (<div className="wrapper">
-            // <LeafletVC selectedToptour={this.state.selectedToptour}/>
-            <CesiumVC selectedToptour={this.state.selectedToptour}/>
+            {graphicVC}
             <SideBar
                 selectedToptour={this.state.selectedToptour}
                 deselectToptour={this.deselectToptour}
                 selectMenu={this.selectMenu}
+
             />
             {menu}
             

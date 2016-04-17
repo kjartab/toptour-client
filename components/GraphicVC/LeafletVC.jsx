@@ -11,16 +11,13 @@ require('leaflet_marker_shadow');
 
 // var createMap = require('./createMap');
 
-
 L.Icon.Default.imagePath = 'bundles/images/';
-
-
 
 
 var LeafletVC = React.createClass({
 
     componentDidMount: function () {
-        var map = new L.map(this.refs.map, {zoomControl: false}).setView([61.3999272955946,5.7503078840252], 12);
+        var map = new L.map(this.refs.map, {zoomControl: false}).setView([61.3999272955946,5.7503078840252], 8);
 
         L.tileLayer('http://www.webatlas.no/maptiles/tiles/webatlas-gray-vektor/wa_grid/{z}/{x}/{y}.png', {
             maxZoom: 20,
@@ -28,17 +25,41 @@ var LeafletVC = React.createClass({
             attribution: '<a target=_blank href="http://www.norkart.no">Norkart AS</a>'
         }).addTo(map);
         this.map = map;
+        var that = this;
+
+        this.map.on('moveend', function(e) {
+            var latLng = that.map.getCenter();
+            that.props.updateCamera({
+                    center : { 
+                        lat : latLng.lat,
+                        lng : latLng.lng
+                    }
+            });
+        });
+
+
+        if (this.props.selectedToptour) {
+            this.layer = L.geoJson(this.props.selectedToptour.geojson).addTo(this.map);
+        }
+
+        if (this.props.camera) {
+            this.setView();
+        }
+
+        
     },
 
+    setView: function() {
+
+        var position = this.props.camera.center;
+        this.map.setView([position.lat, position.lng], 12)
+        
+
+    },
 
     componentDidUpdate: function (prevProps, prevState) {
-        // console.log(this.props, "map");
-        // console.log(this.props.selectedToptour);
-        // this.layer.clearLayers();
-        // this.layer.addLayer(this.props.selectedToptour.geojson);
         
         if (prevProps.selectedToptour != this.props.selectedToptour) {
-            console.log("new")
             if (this.layer) {
                     this.layer.clearLayers();
                 }
@@ -47,8 +68,6 @@ var LeafletVC = React.createClass({
                 this.layer = L.geoJson(this.props.selectedToptour.geojson).addTo(this.map);
                 this.map.fitBounds(this.layer.getBounds());
             }
-            
-
         }
     },
 
