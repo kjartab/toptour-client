@@ -69,27 +69,27 @@ var OpenlayersVC = React.createClass({
     getGeojson: function(geojsonFeature) {
 
         var geojsonObject = {
-                    'type': 'FeatureCollection',
-                    'crs': {
-                    'type': 'name',
-                    'properties': {
-                        'name': 'EPSG:4326'
-                    }
-                    },
-                    'features': [
-                        {
-                          'type': 'Feature',
-                          'geometry': {
-                            'type': 'GeometryCollection',
-                           'geometries': [
-                              geojsonFeature
-                            ]
-                        }
-                    }
-
+            'type': 'FeatureCollection',
+            'crs': {
+            'type': 'name',
+            'properties': {
+                'name': 'EPSG:4326'
+            }
+            },
+            'features': [
+                {
+                  'type': 'Feature',
+                  'geometry': {
+                    'type': 'GeometryCollection',
+                   'geometries': [
+                      geojsonFeature
                     ]
-                };
-                return geojsonObject;
+                }
+            }
+
+            ]
+        };
+        return geojsonObject;
     },
 
     componentDidUpdate: function (prevProps, prevState) {
@@ -119,6 +119,8 @@ var OpenlayersVC = React.createClass({
                   );
 
                 this.source.addFeatures(features);
+
+                this.vectorLayer.get
                 
             }
         }

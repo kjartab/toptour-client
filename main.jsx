@@ -190,6 +190,7 @@ var App = React.createClass({
                 graphicVCs[key].selected = false;
             }
         }
+        console.log(graphicVCs)
 
         this.setState({
             graphicVCs : graphicVCs
@@ -291,7 +292,7 @@ var App = React.createClass({
                         />;
                 // return(<| selectedToptour={this.state.selectedToptour}/>);
             case "leaflet":
-                <LeafletVC 
+                    return <LeafletVC 
                             selectedToptour={this.state.selectedToptour}                            
                             addedLayers={this.state.addedLayers}
                             updateCamera={this.updateCamera}
