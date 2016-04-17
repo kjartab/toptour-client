@@ -1,8 +1,17 @@
 'use strict';
 
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
+    config: {
+        plugins: [
+            new webpack.optimize.UglifyJsPlugin({
+              sourceMap: false,
+              mangle: false
+            })
+          ]
+      },
     entry: {
         main: './main.jsx'
     },

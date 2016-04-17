@@ -1,6 +1,6 @@
 'use strict';
 // var ol = require('openlayers');
-var ol = require('../../node_modules/openlayers/dist/ol-debug.js');
+var ol = require('openlayers');
 var React = require('react');
 var ReactDOM = require('react-dom');
 var _ = require('underscore');

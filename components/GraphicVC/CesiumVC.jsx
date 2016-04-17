@@ -8,10 +8,10 @@ var _ = require('underscore');
 var Cesium = window.Cesium;
 
 
-require('leaflet_css');
-require('leaflet_marker');
-require('leaflet_marker_2x');
-require('leaflet_marker_shadow');
+// require('leaflet_css');
+// require('leaflet_marker');
+// require('leaflet_marker_2x');
+// require('leaflet_marker_shadow');
 
 
 
@@ -21,7 +21,7 @@ var CesiumVC = React.createClass({
 
         var config = {
             timeline: false, 
-            baseLayerPicker: false, 
+            baseLayerPicker: false,     
             geocoder : false, 
             animation: false,
             orderIndependentTranslucency: false,
