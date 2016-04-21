@@ -50,6 +50,15 @@ var OpenlayersVC = React.createClass({
             // this.vectorSource = new ol.source.Vector({
             //     features: (new ol.format.GeoJSON()).readFeatures(geojson)
             // });
+                var geojsonFormat = new ol.format.GeoJSON();
+                var features = geojsonFormat.readFeatures(this.getGeojson(this.props.selectedToptour.geojson), {
+
+                  dataProjection: 'EPSG:4326',
+                  featureProjection: 'EPSG:3857'}
+                  );
+
+                this.source.addFeatures(features);
+
         }
         // this.adde();
         // if (this.props.camera) {
@@ -120,7 +129,6 @@ var OpenlayersVC = React.createClass({
 
                 this.source.addFeatures(features);
 
-                this.vectorLayer.get
                 
             }
         }
