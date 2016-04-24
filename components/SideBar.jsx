@@ -12,11 +12,14 @@ var Button = React.createClass({
     },
 
     render: function () {
+        console.log(this.props);
+        var iconClass="icon " + this.props.iconClass;
     return (
       <button
         className="btn btn-default"
         // style={buttonStyle}
-        onClick={this.onClick}>{this.props.label}</button>
+        label={this.props.label}
+        onClick={this.onClick}><i className={iconClass}></i></button>
     );
     }
 });
@@ -36,24 +39,23 @@ var SideBar = React.createClass({
     },
 
 
-
-
     render: function() {
             if (this.props.selectedToptour) {
                 return (
                     <div className="sidebar">
-                        <Button menuId="selected-back" handleClick={this.clicked} label="<-"></Button>
-                        <Button menuId="selected-map" handleClick={this.clicked} label="maps"></Button>
-                        <Button menuId="selected-info" handleClick={this.clicked} label="info"></Button>
+                        <Button menuId="selected-back" handleClick={this.clicked} iconClass="ion-chevron-left" label="<-"></Button>
+                        <Button menuId="selected-map" handleClick={this.clicked} iconClass="ion-android-map" label="maps"></Button>
+                        <Button menuId="selected-map" handleClick={this.clicked} iconClass="ion-images" label="images"></Button>
+                        <Button menuId="selected-info" handleClick={this.clicked} iconClass="ion-information" label="info"></Button>
                     </div>
                 );
             }
             return(
             <div className="sidebar">
-                <Button menuId="search" handleClick={this.clicked} label="search"></Button>
-                <Button menuId="maps" handleClick={this.clicked} label="maps"></Button>
-                <Button menuId="news" handleClick={this.clicked} label="news"></Button>
-                <Button menuId="about" handleClick={this.clicked} label="about"></Button>
+                <Button menuId="search" handleClick={this.clicked} iconClass="ion-search" label="search"></Button>
+                <Button menuId="maps" handleClick={this.clicked} iconClass="ion-android-map" label="maps"></Button>
+                <Button menuId="news" handleClick={this.clicked} iconClass="ion-android-notifications-none" label="news"></Button>
+                <Button menuId="about" handleClick={this.clicked} iconClass="ion-information" label="about"></Button>
             </div>);
     }
 

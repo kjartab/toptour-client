@@ -2,18 +2,9 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 window.CESIUM_BASE_URL = './public/Cesium';
-require('cesium_js');
+var Cesium = require('cesium_js');
 require('cesium_widgets_css');
 var _ = require('underscore');
-var Cesium = window.Cesium;
-
-
-// require('leaflet_css');
-// require('leaflet_marker');
-// require('leaflet_marker_2x');
-// require('leaflet_marker_shadow');
-
-
 
 var CesiumVC = React.createClass({
 

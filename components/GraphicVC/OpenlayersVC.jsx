@@ -37,33 +37,27 @@ var OpenlayersVC = React.createClass({
 
         this.source = new ol.source.Vector();
         this.vectorLayer = new ol.layer.Vector({
-                source: this.source
-              });
-
-                // vector.getSource().addFeature(k);
+            source: this.source
+        });
 
         this.map.addLayer(this.vectorLayer);
 
         if (this.props.selectedToptour) {
-            
-            // var geojson = this.getGeojson(this.props.selectedToptour.geojson);
-            // this.vectorSource = new ol.source.Vector({
-            //     features: (new ol.format.GeoJSON()).readFeatures(geojson)
-            // });
-                var geojsonFormat = new ol.format.GeoJSON();
-                var features = geojsonFormat.readFeatures(this.getGeojson(this.props.selectedToptour.geojson), {
+        
+            var geojsonFormat = new ol.format.GeoJSON();
+            var features = geojsonFormat.readFeatures(this.getGeojson(this.props.selectedToptour.geojson), {
 
-                  dataProjection: 'EPSG:4326',
-                  featureProjection: 'EPSG:3857'}
-                  );
+              dataProjection: 'EPSG:4326',
+              featureProjection: 'EPSG:3857'}
+              );
 
-                this.source.addFeatures(features);
+            this.source.addFeatures(features);
 
         }
-        // this.adde();
-        // if (this.props.camera) {
-        //     this.setView();
-        // }
+
+        if (this.props.camera) {
+            this.setView();
+        }
 
         
     },
@@ -71,7 +65,13 @@ var OpenlayersVC = React.createClass({
     setView: function() {
 
         var position = this.props.camera.center;
-        this.map.setView([position.lat, position.lng], 12);
+
+        // var extent = []
+        // this.map.fit(extent, map.getSize()); 
+
+
+        this.map.getView().setCenter(ol.proj.transform([position.lng, position.lat], 'EPSG:4326', 'EPSG:3857'));
+        this.map.getView().setZoom(12);
         
     },
 
@@ -107,22 +107,12 @@ var OpenlayersVC = React.createClass({
         if (prevProps.selectedToptour != this.props.selectedToptour) {
             if (this.source.getFeatures().length > 0) {
                     this.source.clear();
-                    // this.map.removeLayer(this.layer);
                     console.log("clearing");
                     ;
                 }
             if (this.props.selectedToptour) {
-
-                // var geojson = this.getGeojson(this.props.selectedToptour.geojson);
-                // var vectorSource = new ol.source.Vector({
-                //     features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
-                // // });
-                // var gjsonObject = new ol.layer.Vector({
-                //     source: new ol.source.GeoJSON(geojsonObject)
-                // });
                 var geojsonFormat = new ol.format.GeoJSON();
                 var features = geojsonFormat.readFeatures(this.getGeojson(this.props.selectedToptour.geojson), {
-
                   dataProjection: 'EPSG:4326',
                   featureProjection: 'EPSG:3857'}
                   );

@@ -10,13 +10,10 @@ var SideBar = require('./components/SideBar.jsx');
 var ToptourView = require('./components/ToptourView.jsx');
 var _ = require('underscore');
 require('./style/map.css');
+require('./style/css/ionicons.css');
 
-// require('bootstrap_css');
+// require('./node_modules/ionicons/dist/css/ionicons.css');
 
-
-// ReactDOM.render(<LeafletMap selectedToptour={selectedToptour}/>, document.getElementById('map'));
-
-// ReactDOM.render(<Search selectedToptour={selectedToptour} setSelectedToptour={setSelectedToptour}/>, document.getElementById('search-container'));
 
 var ToptourHeader = React.createClass({
 
@@ -61,8 +58,12 @@ var GraphicViewControllerRadioButton = React.createClass({
 
 
     onChange: function(e) {
-        console.log(e);
         this.props.onChange(this.props.graphicVCId);
+        require.ensure(['jquery'], function() {
+            var $ = require('jquery');
+            console.log("ENSURE JQUERY");
+        var k= $("<div></div>");
+        });
     },
 
     render: function() {
@@ -71,8 +72,10 @@ var GraphicViewControllerRadioButton = React.createClass({
                     type="radio" 
                     onChange={this.onChange}
                     name="graphicVCId" 
-                    value={this.props.graphicVCId}
-                /> {this.props.name}</div>
+                    checked = {this.props.graphicVC.selected}
+                    // check={this.props.selected}
+                    value={this.props.graphicVC.id}
+                /> {this.props.graphicVC.name}</div>
     }
 });
 
@@ -80,19 +83,16 @@ var GraphicViewControllerRadioButton = React.createClass({
 var GraphicViewerControllerMenu = React.createClass({
 
     onGraphicVCChanged: function(graphicVCId) {
-        // console.log(e);
-        // console.log("CLICK")
         this.props.selectGraphicVCById(graphicVCId);
     },
-
 
     render:  function() {
 
         var radios = _.map(this.props.graphicVCs, function(obj, key) {
             return (<GraphicViewControllerRadioButton 
-                        key={key}
                         graphicVCId={key}
-                        name={obj.name}
+                        key = {key}
+                        graphicVC={obj}
                         onChange={this.onGraphicVCChanged} 
                     />);
         }, this);
@@ -107,41 +107,6 @@ var GraphicViewerControllerMenu = React.createClass({
         </div>);
     }
 
-    // ,
-
-    // render: function() {
-    //     return (
-    //         <div className="menu">
-
-    //             <h3>Karttype</h3>
-
-    //             <form action="">
-    //                 <input 
-    //                     type="radio" 
-    //                     name="graphicVCType" 
-    //                     onChange={this.onGraphicVCChanged} 
-    //                     value="leaflet"
-    //                 /> Leaflet<br/>
-
-    //                 <input 
-    //                     type="radio" 
-    //                     name="graphicVCType" 
-    //                     onChange={this.onGraphicVCChanged} 
-    //                     value="cesium"
-    //                 /> Cesium 
-    //             </form>
-
-    //             <h3>Kartlag</h3>
-
-    //             <form action="">
-    //                 <input type="radio" name="graphicVCType" value="leaflet"/> Norkart  <br/>
-    //                 <input type="radio" name="graphicVCType" value="cesium"/> OSM
-    //             </form>
-
-    //         </div>
-    //         );
-    // }
-
 });
 
 
@@ -152,11 +117,11 @@ var App = React.createClass({
         var graphicVCs = {
                 "openlayers": {
                     name: "Openlayers",
-                    selected : true
+                    selected : false
                 },  
                 "leaflet": {
                     name: "Leaflet",
-                    selected : false
+                    selected : true
                 },  
                 "cesium": {
                     name: "Cesium",
@@ -283,14 +248,14 @@ var App = React.createClass({
         });
 
         switch(selectedKey) {
-            // case "openlayers":
-            //     return <OpenlayersVC 
-            //                 selectedToptour={this.state.selectedToptour}
-            //                 addedLayers={this.state.addedLayers}
-            //                 updateCamera={this.updateCamera}
-            //                 camera={this.state.camera}
-            //             />;
-                // return(<| selectedToptour={this.state.selectedToptour}/>);
+            case "openlayers":
+                return <OpenlayersVC 
+                            selectedToptour={this.state.selectedToptour}
+                            addedLayers={this.state.addedLayers}
+                            updateCamera={this.updateCamera}
+                            camera={this.state.camera}
+                        />;
+
             case "leaflet":
                     return <LeafletVC 
                             selectedToptour={this.state.selectedToptour}                            
@@ -308,7 +273,7 @@ var App = React.createClass({
             //             />;
 
             default:
-                return  <OpenlayersVC 
+                return <LeafletVC 
                             selectedToptour={this.state.selectedToptour}                            
                             addedLayers={this.state.addedLayers}
                             updateCamera={this.updateCamera}
