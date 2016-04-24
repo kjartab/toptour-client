@@ -23,9 +23,9 @@ module.exports = {
    resolve: {
         extensions: ['', '.html', '.js', '.json', '.scss', '.css'],
         alias: {
-            cesium_js: __dirname + '/node_modules/cesium/Build/Cesium/Cesium.js',
-            cesium_widgets_css: __dirname + '/node_modules/cesium/Build/Cesium/Widgets/widgets.css',
-            cesium_assets: __dirname + '/node_modules/cesium/Build/Cesium/Assets',
+            cesium_js: __dirname + '/node_modules/cesium/Build/CesiumUnminified/Cesium.js',
+            cesium_widgets_css: __dirname + '/node_modules/cesium/Build/CesiumUnminified/Widgets/widgets.css',
+            cesium_assets: __dirname + '/node_modules/cesium/Build/CesiumUnminified/Assets',
             openlayers_css: __dirname + '/node_modules/openlayers/dist/ol.css',
             leaflet_css: __dirname + '/node_modules/leaflet/dist/leaflet.css',
             leaflet_marker: __dirname + '/node_modules/leaflet/dist/images/marker-icon.png',
@@ -51,6 +51,8 @@ module.exports = {
                 }
             },
             {test: /\.(png|jpg)$/, loader: 'file-loader?name=images/[name].[ext]'}
+            // ,
+            // { test: /Cesium\.js$/, loader: 'script' }
         ]
     }
 };

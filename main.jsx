@@ -3,7 +3,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 var LeafletVC = require('./components/GraphicVC/LeafletVC.jsx');
-// var CesiumVC = require('./components/GraphicVC/CesiumVC.jsx');
+var CesiumVC = require('./components/GraphicVC/CesiumVC.jsx');
 var OpenlayersVC = require('./components/GraphicVC/OpenlayersVC.jsx');
 var Search = require('./components/Search.jsx');
 var SideBar = require('./components/SideBar.jsx');
@@ -264,13 +264,13 @@ var App = React.createClass({
                             camera={this.state.camera}
                         />;
 
-            // case "cesium":
-            //     return  <CesiumVC 
-            //                 selectedToptour={this.state.selectedToptour}
-            //                 addedLayers={this.state.addedLayers}
-            //                 updateCamera={this.updateCamera}
-            //                 camera={this.state.camera}
-            //             />;
+            case "cesium":
+                return  <CesiumVC 
+                            selectedToptour={this.state.selectedToptour}
+                            addedLayers={this.state.addedLayers}
+                            updateCamera={this.updateCamera}
+                            camera={this.state.camera}
+                        />;
 
             default:
                 return <LeafletVC 
