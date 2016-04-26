@@ -26,7 +26,7 @@ body,html{
 
     position: absolute;
     top: 10px;
-    left: 50px;
+    left: 52px;
     width:300px;
     height:auto;
     background-color:white;
@@ -48,11 +48,19 @@ body,html{
     height:100%;
     width:100%;
 }
+
 .search-result {
+    padding: 5px;
+    font-family: arial;
     list-style-type: none;
     background-color:white;
 }
+.search-result:hover {
 
+    background-color: #efefef;
+    cursor:pointer;
+    
+}
 .toptour-header{
     position: absolute;
     top: 10px;
@@ -92,15 +100,37 @@ body,html{
     padding:0;
 }
 
-.search-container li {
-
+.search-container input { 
+    font-size: 16px;
+    padding: 10px;
+    width: 296px;
+    border: none;
+    border: 1px grey solid;
 }
 
-.search-container li:hover {
-    background-color: #efefef;
-    cursor:pointer;
+.search-container input:active {
+
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+.search-container input:focus
+ {
+
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
+.search-container input:active {
+    
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
 .list {
     position: absolute;
     right: 10px;
@@ -111,6 +141,16 @@ body,html{
     z-index: 2000;
     border-radius: 4px;
     overflow-y: scroll;
+}
+
+
+.btn:active,
+.btn:focus,
+.btn.active {
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 

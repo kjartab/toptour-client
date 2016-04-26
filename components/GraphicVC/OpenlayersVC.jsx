@@ -26,6 +26,7 @@ var OpenlayersVC = React.createClass({
                 source: new ol.source.OSM()
             })
         ],
+        controls: [],
         target: this.refs.map,
         view: new ol.View({
             center: [0, 0],

@@ -31,7 +31,10 @@ module.exports = {
             leaflet_marker: __dirname + '/node_modules/leaflet/dist/images/marker-icon.png',
             leaflet_marker_green: __dirname + '/images/marker-icon-green.png',
             leaflet_marker_2x: __dirname + '/node_modules/leaflet/dist/images/marker-icon-2x.png',
-            leaflet_marker_shadow: __dirname + '/node_modules/leaflet/dist/images/marker-shadow.png'
+            leaflet_marker_shadow: __dirname + '/node_modules/leaflet/dist/images/marker-shadow.png',
+            ionicons_css: __dirname + '/style/css/ionicons.css',
+            site_css:  __dirname + '/style/map.css',
+            mapboxgl_css:  __dirname + '/node_modules/mapbox-gl/dist/mapbox-gl.css'
         }
     },
     module: {
