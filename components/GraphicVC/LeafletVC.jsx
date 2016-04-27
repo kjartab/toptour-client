@@ -19,11 +19,16 @@ var LeafletVC = React.createClass({
     componentDidMount: function () {
         var map = new L.map(this.refs.map, {zoomControl: false}).setView([61.3999272955946,5.7503078840252], 8);
 
-        L.tileLayer('http://www.webatlas.no/maptiles/tiles/webatlas-gray-vektor/wa_grid/{z}/{x}/{y}.png', {
+        L.tileLayer('http://www.webatlas.no/maptiles/tiles/webatlas-standard-vektor/wa_grid/{z}/{x}/{y}.png', {
             maxZoom: 20,
             zIndex: 0,
             attribution: '<a target=_blank href="http://www.norkart.no">Norkart AS</a>'
         }).addTo(map);
+
+        // var mapboxTiles = L.tileLayer('https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token='+config.mapboxToken, {
+        //     attribution: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        // }).addTo(map);
+
         this.map = map;
         var that = this;
 
