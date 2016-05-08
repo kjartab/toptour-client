@@ -29,6 +29,14 @@ var LeafletVC = React.createClass({
         //     attribution: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         // }).addTo(map);
 
+        var toptourWms = L.tileLayer.wms(config.geodata.server + '/toptour ',
+             {
+                layers : 'tur',
+                format: 'image/png',
+                transparent: true
+             }
+            ).addTo(map);
+
         this.map = map;
         var that = this;
 

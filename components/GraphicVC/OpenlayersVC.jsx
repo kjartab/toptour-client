@@ -43,18 +43,17 @@ var OpenlayersVC = React.createClass({
         });
         var map = new ol.Map({
         layers: [
-            norkart,
-            // new ol.layer.Tile({
-            //     source: new ol.source.OSM()
-            // }),
-            skiKart
+            // norkart,
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })
 
         ],
         controls: [],
         target: this.refs.map,
         view: new ol.View({
             center: [0, 0],
-            projection: projection,
+            // projection: projection,
             zoom: 2
         })
         });
@@ -101,7 +100,7 @@ var OpenlayersVC = React.createClass({
     },
 
     setView: function() {
-
+        
         var position = this.props.camera.center;
 
         // var extent = []

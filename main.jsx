@@ -170,7 +170,7 @@ var App = React.createClass({
                             updateCamera={this.updateCamera}
                             camera={this.state.camera}
                         />;
-
+                        
             case "leaflet":
                     return <LeafletVC 
                             selectedToptour={this.state.selectedToptour}                            
