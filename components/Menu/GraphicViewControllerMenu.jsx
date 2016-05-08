@@ -17,21 +17,20 @@ var GraphicViewControllerRadioButton = React.createClass({
         this.props.onChange(this.props.graphicVCId);
         require.ensure(['jquery'], function() {
             var $ = require('jquery');
-            console.log("ENSURE JQUERY");
         var k= $("<div></div>");
         });
     },
 
     render: function() {
         return <div >
-                    <input 
+                   <input  
                     type="radio" 
                     onChange={this.onChange}
                     name="graphicVCId" 
                     checked = {this.props.graphicVC.selected}
-                    // check={this.props.selected}
                     value={this.props.graphicVC.id}
-                /> {this.props.graphicVC.name}</div>
+                /> {this.props.graphicVC.name}
+                </div>
     }
 });
 
@@ -42,7 +41,7 @@ var GraphicViewControllerMenu = React.createClass({
         this.props.selectGraphicVCById(graphicVCId);
     },
 
-    render:  function() {
+    render: function() {
 
         var radios = _.map(this.props.graphicVCs, function(obj, key) {
             return (<GraphicViewControllerRadioButton 
@@ -53,13 +52,18 @@ var GraphicViewControllerMenu = React.createClass({
                     />);
         }, this);
 
-        return(<div className="menu">
-                    <h3>Karttype</h3>
+        var checkBoxes = null;
+        var checkBoxes = _.map(this.props, function(obj, key) {
+            return (<div><input type="checkbox" /></div>);
+        });
 
-                    <form action="">
+        return(<div className="menu">
+                <h3>Karttype</h3>
+
+                <form action="">
                     {radios}
-                    
-                    </form>
+                </form>
+                
         </div>);
     }
 

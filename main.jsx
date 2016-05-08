@@ -45,6 +45,7 @@ var App = React.createClass({
 
         return {
             searchServerUrl : config.searchServerUrl,
+            geodata: config.geodata,
             selectedMenu: "search",
             selectedToptour : null,
             visible: false,

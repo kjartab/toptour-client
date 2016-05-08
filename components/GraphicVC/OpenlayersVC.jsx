@@ -19,17 +19,42 @@ var OpenlayersVC = React.createClass({
         //     zIndex: 0,
         //     attribution: '<a target=_blank href="http://www.norkart.no">Norkart AS</a>'
         // }).addTo(map);
+// contextualWMSLegend=0&crs=EPSG:32633&dpiMode=7&featureCount=10&format=image/png&layers=Kart&styles=&url=http://waapi.webatlas.no/wms-vektor-standard/?apitoken%3D7f9b6f4d-ee6e-4891-a18c-0e4bdf17f197%26
+        var norkart = new ol.layer.Tile({
+            source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+              url: "http://www.webatlas.no/wms-std-forsikring-orto/",
+              params: {'LAYERS': 'ortofoto', 'TILED': true, 'CRS' : "epsg:32633"  },
+              serverType: 'geoserver'
+            }))
+          });
 
+
+        var skiKart = new ol.layer.Tile({
+            source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+              url: "http://gridwms.nve.no/WMS_server/wms_server.aspx?time=2016-05-08&custRefresh=0.9774090043590655&SERVICE=WMS&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=TRUE&STYLES=&VERSION=1.1.1&LAYERS=ski&SRS=EPSG:32633&",
+              params: {'LAYERS': 'ski', 'TILED': true, 'CRS' : "epsg:32633"},
+              serverType: 'geoserver'
+            }))
+          });
+
+        var projection = new ol.proj.Projection({
+            code: 'EPSG:32633',
+            units: 'm'
+        });
         var map = new ol.Map({
         layers: [
-            new ol.layer.Tile({
-                source: new ol.source.OSM()
-            })
+            norkart,
+            // new ol.layer.Tile({
+            //     source: new ol.source.OSM()
+            // }),
+            skiKart
+
         ],
         controls: [],
         target: this.refs.map,
         view: new ol.View({
             center: [0, 0],
+            projection: projection,
             zoom: 2
         })
         });
@@ -42,6 +67,18 @@ var OpenlayersVC = React.createClass({
         });
 
         this.map.addLayer(this.vectorLayer);
+
+        this.map.addLayer(skiKart);
+
+
+        // var snokartSki = L.tileLayer.wms("http://gridwms.nve.no/WMS_server/wms_server.aspx?time=2016-05-08", {
+        //     layers: 'ski',
+        //     format: 'image/png',
+        //     transparent: true,
+        //     attribution: "NVE"
+        // }).addTo(map);
+
+
 
         if (this.props.selectedToptour) {
         
