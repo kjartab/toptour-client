@@ -5,6 +5,7 @@
   remote_user: ansible
   vars:
     project_name: toptour_client
-    search_server: http://www.search.kartan.no:9200
+    search_server: http://www.search.kartan.no
+    map_server: http://www.maps.kartan.no
   roles:
     - deploy_app
