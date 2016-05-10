@@ -31,7 +31,7 @@ var LeafletVC = React.createClass({
 
         var toptourWms = L.tileLayer.wms(config.geodata.server + '/toptour ',
              {
-                layers : 'tur',
+                layers : 'turview',
                 format: 'image/png',
                 transparent: true
              }
