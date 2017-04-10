@@ -1,1 +1,34 @@
-const token = 'pk.eyJ1Ijoia2phcnRhYiIsImEiOiJjajFhaDJjeWYwMDM2MzNuNW9qaHY1Y2ljIn0.GXGL6PYl_oEw4kRmQw5uCQ';
+module.exports = {
+
+  entry: [
+    './app',
+    'webpack/hot/dev-server',
+    'webpack-dev-server/client?http://0.0.0.0:3000',
+  ],
+
+  devtool: 'source-maps',
+
+  resolve: {
+    alias: {
+      webworkify: 'webworkify-webpack-dropin',
+    },
+  },
+
+  module: {
+
+    rules: [{
+      test: /\.js$/,
+      loader: 'babel-loader',
+    }, {
+      include: /node_modules\/mapbox-gl.*\.js$/,
+      loader: 'transform-loader?brfs-babel',
+      enforce: 'post',
+    }],
+
+  },
+
+  node: {
+    fs: 'empty',
+  },
+
+};

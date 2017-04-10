@@ -1,150 +1,51 @@
+// This file contains webpack configuration settings that allow
+// examples to be built against the deck.gl source code in this repo instead
+// of building against their installed version of deck.gl.
+//
+// This enables using the examples to debug the main deck.gl library source
+// without publishing or npm linking, with conveniences such hot reloading etc.
+
+const {resolve} = require('path');
 const webpack = require('webpack');
-const path = require('path');
 
-const sourcePath = path.join(__dirname, './client');
-const staticsPath = path.join(__dirname, './static');
+const LIB_DIR = resolve(__dirname, '..');
+const SRC_DIR = resolve(LIB_DIR, './src');
 
-module.exports = function (env) {
-  const nodeEnv = env && env.prod ? 'production' : 'development';
-  const isProd = nodeEnv === 'production';
-
-  const plugins = [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity,
-      filename: 'vendor.bundle.js'
-    }),
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: nodeEnv,
-    }),
-    new webpack.NamedModulesPlugin(),
-  ];
-
-  if (isProd) {
-    plugins.push(
-      new webpack.LoaderOptionsPlugin({
-        minimize: true,
-        debug: false
-      }),
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false,
-          screw_ie8: true,
-          conditionals: true,
-          unused: true,
-          comparisons: true,
-          sequences: true,
-          dead_code: true,
-          evaluate: true,
-          if_return: true,
-          join_vars: true,
-        },
-        output: {
-          comments: false,
-        },
-      })
-    );
-  } else {
-    plugins.push(
-      new webpack.HotModuleReplacementPlugin()
-    );
-  }
-
-  return {
-    devtool: isProd ? 'source-map' : 'eval',
-    context: sourcePath,
-    entry: {
-      js: './index.js',
-      vendor: ['react']
-    },
-    output: {
-      path: staticsPath,
-      filename: '[name].bundle.js',
-    },
-    module: {
-      rules: [
-        {
-          test: /render[\/\\]shaders\.js$/,
-          loader: 'transform/cacheable',
-          query: "brfs"
-        },
-        {
-          test: /[\/\\]webworkify[\/\\]index.js\.js$/,
-          loader: 'worker'
-        },
-        {
-          test: /\.html$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'file-loader',
-            query: {
-              name: '[name].[ext]'
-            },
-          },
-        },
-        {
-          test: /\.css$/,
-          exclude: /node_modules/,
-          use: [
-            'style-loader',
-            'css-loader'
-          ]
-        },
-        {
-          test: /\.(js|jsx)$/,
-          exclude: /node_modules/,
-          use: [
-            'babel-loader'
-          ],
-        },
-      ],
-    },
-    resolve: {
-      extensions: ['.webpack-loader.js', '.web-loader.js', '.loader.js', '.js', '.jsx'],
-      modules: [
-        path.resolve(__dirname, 'node_modules'),
-        sourcePath
-      ],
-      alias: {
-            webworkify: 'webworkify-webpack'
-        }
-    },
-
-    plugins,
-
-    performance: isProd && {
-      maxAssetSize: 100,
-      maxEntrypointSize: 300,
-      hints: 'warning',
-    },
-
+// Support for hot reloading changes to the deck.gl library:
+const LOCAL_DEVELOPMENT_CONFIG = {
+  // suppress warnings about bundle size
+  devServer: {
     stats: {
-      colors: {
-        green: '\u001b[32m',
-      }
-    },
-
-    devServer: {
-      contentBase: './client',
-      historyApiFallback: true,
-      port: 3005,
-      compress: isProd,
-      inline: !isProd,
-      hot: !isProd,
-      stats: {
-        assets: true,
-        children: false,
-        chunks: false,
-        hash: false,
-        modules: false,
-        publicPath: false,
-        timings: true,
-        version: false,
-        warnings: true,
-        colors: {
-          green: '\u001b[32m',
-        }
-      },
+      warnings: false
     }
-  };
+  },
+
+  resolve: {
+    alias: {
+      // Imports the deck.gl library from the src directory in this repo
+      'react-map-gl': SRC_DIR,
+      react: resolve(LIB_DIR, './node_modules/react')
+    }
+  },
+  module: {
+    rules: []
+  },
+  // Optional: Enables reading mapbox token from environment variable
+  plugins: [
+    new webpack.EnvironmentPlugin(['MAPBOX_ACCESS_TOKEN', 'pk.eyJ1Ijoia2phcnRhYiIsImEiOiJjajFhaDJjeWYwMDM2MzNuNW9qaHY1Y2ljIn0.GXGL6PYl_oEw4kRmQw5uCQ'])
+  ]
+};
+
+function addLocalDevSettings(config) {
+  Object.assign(config.resolve.alias, LOCAL_DEVELOPMENT_CONFIG.resolve.alias);
+  config.module.rules = config.module.rules.concat(LOCAL_DEVELOPMENT_CONFIG.module.rules);
+  return config;
+}
+
+module.exports = baseConfig => env => {
+  const config = baseConfig;
+  if (env && env.local) {
+    addLocalDevSettings(config);
+  }
+  return config;
 };
