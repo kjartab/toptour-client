@@ -1,61 +1,150 @@
-'use strict';
+const webpack = require('webpack');
+const path = require('path');
 
-var path = require('path');
-var webpack = require('webpack');
+const sourcePath = path.join(__dirname, './client');
+const staticsPath = path.join(__dirname, './static');
 
-module.exports = {
-    config: {
-        plugins: [
-            new webpack.optimize.UglifyJsPlugin({
-              sourceMap: false,
-              mangle: false
-            })
-          ]
-      },
+module.exports = function (env) {
+  const nodeEnv = env && env.prod ? 'production' : 'development';
+  const isProd = nodeEnv === 'production';
+
+  const plugins = [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity,
+      filename: 'vendor.bundle.js'
+    }),
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: nodeEnv,
+    }),
+    new webpack.NamedModulesPlugin(),
+  ];
+
+  if (isProd) {
+    plugins.push(
+      new webpack.LoaderOptionsPlugin({
+        minimize: true,
+        debug: false
+      }),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false,
+          screw_ie8: true,
+          conditionals: true,
+          unused: true,
+          comparisons: true,
+          sequences: true,
+          dead_code: true,
+          evaluate: true,
+          if_return: true,
+          join_vars: true,
+        },
+        output: {
+          comments: false,
+        },
+      })
+    );
+  } else {
+    plugins.push(
+      new webpack.HotModuleReplacementPlugin()
+    );
+  }
+
+  return {
+    devtool: isProd ? 'source-map' : 'eval',
+    context: sourcePath,
     entry: {
-        main: './main.jsx'
+      js: './index.js',
+      vendor: ['react']
     },
     output: {
-        path: path.join(__dirname, 'bundles'),
-        filename: '[name].bundle.js',
-        publicPath: '/bundles/'
-    },
-   resolve: {
-        extensions: ['', '.html', '.js', '.json', '.scss', '.css'],
-        alias: {
-            cesium_js: __dirname + '/node_modules/cesium/Build/CesiumUnminified/Cesium.js',
-            cesium_widgets_css: __dirname + '/node_modules/cesium/Build/CesiumUnminified/Widgets/widgets.css',
-            cesium_assets: __dirname + '/node_modules/cesium/Build/CesiumUnminified/Assets',
-            openlayers_css: __dirname + '/node_modules/openlayers/dist/ol.css',
-            leaflet_css: __dirname + '/node_modules/leaflet/dist/leaflet.css',
-            leaflet_marker: __dirname + '/node_modules/leaflet/dist/images/marker-icon.png',
-            leaflet_marker_green: __dirname + '/images/marker-icon-green.png',
-            leaflet_marker_2x: __dirname + '/node_modules/leaflet/dist/images/marker-icon-2x.png',
-            leaflet_marker_shadow: __dirname + '/node_modules/leaflet/dist/images/marker-shadow.png',
-            ionicons_css: __dirname + '/style/css/ionicons.css',
-            site_css:  __dirname + '/style/map.css',
-            mapboxgl_css:  __dirname + '/node_modules/mapbox-gl/dist/mapbox-gl.css'
-        }
+      path: staticsPath,
+      filename: '[name].bundle.js',
     },
     module: {
-        loaders: [
-            {test: /\.css$/, loader: 'style-loader!css-loader'},
-            {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
-            // {test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000'},
-            {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream'},
-            {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'},
-            { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader?name=fonts/[name].[ext]' },
-            {
-                test: /.jsx?$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/,
-                query: {
-                    presets: ['react']
-                }
+      rules: [
+        {
+          test: /render[\/\\]shaders\.js$/,
+          loader: 'transform/cacheable',
+          query: "brfs"
+        },
+        {
+          test: /[\/\\]webworkify[\/\\]index.js\.js$/,
+          loader: 'worker'
+        },
+        {
+          test: /\.html$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'file-loader',
+            query: {
+              name: '[name].[ext]'
             },
-            {test: /\.(png|jpg)$/, loader: 'file-loader?name=images/[name].[ext]'}
-            // ,
-            // { test: /Cesium\.js$/, loader: 'script' }
-        ]
+          },
+        },
+        {
+          test: /\.css$/,
+          exclude: /node_modules/,
+          use: [
+            'style-loader',
+            'css-loader'
+          ]
+        },
+        {
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules/,
+          use: [
+            'babel-loader'
+          ],
+        },
+      ],
+    },
+    resolve: {
+      extensions: ['.webpack-loader.js', '.web-loader.js', '.loader.js', '.js', '.jsx'],
+      modules: [
+        path.resolve(__dirname, 'node_modules'),
+        sourcePath
+      ],
+      alias: {
+            webworkify: 'webworkify-webpack'
+        }
+    },
+
+    plugins,
+
+    performance: isProd && {
+      maxAssetSize: 100,
+      maxEntrypointSize: 300,
+      hints: 'warning',
+    },
+
+    stats: {
+      colors: {
+        green: '\u001b[32m',
+      }
+    },
+
+    devServer: {
+      contentBase: './client',
+      historyApiFallback: true,
+      port: 3005,
+      compress: isProd,
+      inline: !isProd,
+      hot: !isProd,
+      stats: {
+        assets: true,
+        children: false,
+        chunks: false,
+        hash: false,
+        modules: false,
+        publicPath: false,
+        timings: true,
+        version: false,
+        warnings: true,
+        colors: {
+          green: '\u001b[32m',
+        }
+      },
     }
+  };
 };
