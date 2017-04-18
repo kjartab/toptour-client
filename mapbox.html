@@ -15,12 +15,13 @@
 
 <div id='map'></div>
 
-<script src="config.js"></script>
+<script src="key.js"></script>
 <script>
 mapboxgl.accessToken = token;
 var map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/mapbox/streets-v9', //stylesheet location
+    // style: 'mapbox://styles/mapbox/streets-v9', //stylesheet location
+    style: 'mapbox://styles/mapbox/outdoors-v10',
     center: [10, 60], // starting position
     zoom: 4 // starting zoom
 });
@@ -32,7 +33,7 @@ var simple = {
         "osm": {
             "scheme": "tms",
             "type": "vector",
-            "tiles": ["http://localhost:8282/geoserver/gwc/service/tms/1.0.0/toptour:turer@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
+            "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:turer@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
         }
     },
     "layers": [
@@ -75,7 +76,7 @@ var simple = {
         "geoserver" : {
             "type" : "vector",
             "scheme" : "tms",
-            "tiles": ["http://localhost:8282/geoserver/gwc/service/tms/1.0.0/toptour:toptour_sane@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
+            "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:toptour_sane@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
         }
     },
     "layers": [
@@ -120,7 +121,7 @@ map.on('load', function () {
     map.addSource("geoserver",{
             "type" : "vector",
             "scheme" : "tms",
-            "tiles": ["http://localhost:8282/geoserver/gwc/service/tms/1.0.0/toptour:toptour_sane@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
+            "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:toptour_sane@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
         })
 
     map.addLayer({
@@ -144,7 +145,7 @@ map.on('load', function () {
     //     "source": {
     //         "type" : "vector",
     //         "scheme" : "tms",
-    //         "tiles": ["http://localhost:8282/geoserver/gwc/service/tms/1.0.0/toptour:toptour_sane@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
+    //         "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:toptour_sane@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
     //     },
     //     "source-layer" : "toptour_sane",
     //     "layout": {
@@ -174,9 +175,37 @@ map.on('load', function () {
     //     }
     // });
         
+    // map.on("mousemove", "terrain-data", function(e) {
+    //     console.log(e);
+    //     // map.setFilter("state-fills-hover", ["==", "name", e.features[0].properties.name]);
+    // });
+    map.addLayer({
+        "id": "state-fills-hover",
+         // "id": "terrain-data",
+        "type": "line", 
+        "source":  "geoserver",
+        "source-layer" : "toptour_sane",
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#ffffff",
+            "line-width": 3
+        },
+        "filter": ["==", "id", ""]
+    });
+
+
     map.on("mousemove", "terrain-data", function(e) {
-        console.log(e);
-        // map.setFilter("state-fills-hover", ["==", "name", e.features[0].properties.name]);
+        map.getCanvas().style.cursor = 'pointer';
+        map.setFilter("state-fills-hover", ["==", "id", e.features[0].properties.id]);
+    });
+
+    // Reset the state-fills-hover layer's filter when the mouse leaves the layer.
+    map.on("mouseleave", "terrain-data", function() {
+        map.getCanvas().style.cursor = '';
+        map.setFilter("state-fills-hover", ["==", "id", ""]);
     });
 
 });

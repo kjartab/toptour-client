@@ -19,11 +19,22 @@ module.exports = {
     rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
-    }, {
-      include: /node_modules\/mapbox-gl.*\.js$/,
-      loader: 'transform-loader?brfs-babel',
-      enforce: 'post',
-    }],
+    }
+    // , {
+    //   include: /node_modules\/mapbox-gl.*\.js$/,
+    //   loader: 'transform-loader?brfs-babel',
+    //   enforce: 'post',
+    // },
+    //   {
+    //     test: /\.json$/,
+    //     loader: 'json-loader'
+    //   },
+    //   {
+    //     include: /node_modules\/mapbox-gl/,
+    //     loader: 'transform',
+    //     query: 'brfs'
+    //   }
+    ],
 
   },
 

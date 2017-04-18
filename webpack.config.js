@@ -1,51 +1,187 @@
-// This file contains webpack configuration settings that allow
-// examples to be built against the deck.gl source code in this repo instead
-// of building against their installed version of deck.gl.
-//
-// This enables using the examples to debug the main deck.gl library source
-// without publishing or npm linking, with conveniences such hot reloading etc.
-
-const {resolve} = require('path');
 const webpack = require('webpack');
+const path = require('path');
 
-const LIB_DIR = resolve(__dirname, '..');
-const SRC_DIR = resolve(LIB_DIR, './src');
+const DashboardPlugin = require('webpack-dashboard/plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
-// Support for hot reloading changes to the deck.gl library:
-const LOCAL_DEVELOPMENT_CONFIG = {
-  // suppress warnings about bundle size
-  devServer: {
-    stats: {
-      warnings: false
+const nodeEnv = process.env.NODE_ENV || 'development';
+const isProduction = nodeEnv === 'production';
+
+const jsSourcePath = path.join(__dirname, './source/js');
+const buildPath = path.join(__dirname, './build');
+const imgPath = path.join(__dirname, './source/assets/img');
+const sourcePath = path.join(__dirname, './source');
+
+// Common plugins
+const plugins = [
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    minChunks: Infinity,
+    filename: 'vendor-[hash].js',
+  }),
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify(nodeEnv),
+    },
+  }),
+  new webpack.NamedModulesPlugin(),
+  new HtmlWebpackPlugin({
+    template: path.join(sourcePath, 'index.html'),
+    path: buildPath,
+    filename: 'index.html',
+  }),
+  new webpack.LoaderOptionsPlugin({
+    options: {
+      postcss: [
+        autoprefixer({
+          browsers: [
+            'last 3 version',
+            'ie >= 10',
+          ],
+        }),
+      ],
+      context: sourcePath,
+    },
+  }),
+];
+
+// Common rules
+const rules = [
+  {
+    test: /\.(js|jsx)$/,
+    exclude: /node_modules/,
+    use: [
+      'babel-loader',
+    ],
+  },
+  {
+    test: /\.(png|gif|jpg|svg)$/,
+    include: imgPath,
+    use: 'url-loader?limit=20480&name=assets/[name]-[hash].[ext]',
+  },
+];
+
+if (isProduction) {
+  // Production plugins
+  plugins.push(
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+        screw_ie8: true,
+        conditionals: true,
+        unused: true,
+        comparisons: true,
+        sequences: true,
+        dead_code: true,
+        evaluate: true,
+        if_return: true,
+        join_vars: true,
+      },
+      output: {
+        comments: false,
+      },
+    }),
+    new ExtractTextPlugin('style-[hash].css')
+  );
+
+  // Production rules
+  rules.push(
+    {
+      test: /\.scss$/,
+      loader: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: 'css-loader!postcss-loader!sass-loader',
+      }),
     }
-  },
+  );
+} else {
+  // Development plugins
+  plugins.push(
+    new webpack.HotModuleReplacementPlugin(),
+    new DashboardPlugin()
+  );
 
-  resolve: {
-    alias: {
-      // Imports the deck.gl library from the src directory in this repo
-      'react-map-gl': SRC_DIR,
-      react: resolve(LIB_DIR, './node_modules/react')
+  // Development rules
+  rules.push(
+    {
+      test: /\.scss$/,
+      exclude: /node_modules/,
+      use: [
+        'style-loader',
+        // Using source maps breaks urls in the CSS loader
+        // https://github.com/webpack/css-loader/issues/232
+        // This comment solves it, but breaks testing from a local network
+        // https://github.com/webpack/css-loader/issues/232#issuecomment-240449998
+        // 'css-loader?sourceMap',
+        'css-loader',
+        'postcss-loader',
+        'sass-loader?sourceMap',
+      ],
     }
-  },
-  module: {
-    rules: []
-  },
-  // Optional: Enables reading mapbox token from environment variable
-  plugins: [
-    new webpack.EnvironmentPlugin(['MAPBOX_ACCESS_TOKEN', 'pk.eyJ1Ijoia2phcnRhYiIsImEiOiJjajFhaDJjeWYwMDM2MzNuNW9qaHY1Y2ljIn0.GXGL6PYl_oEw4kRmQw5uCQ'])
-  ]
-};
-
-function addLocalDevSettings(config) {
-  Object.assign(config.resolve.alias, LOCAL_DEVELOPMENT_CONFIG.resolve.alias);
-  config.module.rules = config.module.rules.concat(LOCAL_DEVELOPMENT_CONFIG.module.rules);
-  return config;
+  );
 }
 
-module.exports = baseConfig => env => {
-  const config = baseConfig;
-  if (env && env.local) {
-    addLocalDevSettings(config);
-  }
-  return config;
+module.exports = {
+  devtool: isProduction ? 'eval' : 'source-map',
+  context: jsSourcePath,
+  entry: {
+    js: './index.js',
+    vendor: [
+      'babel-polyfill',
+      'es6-promise',
+      'immutable',
+      'isomorphic-fetch',
+      'react-dom',
+      'react-redux',
+      'react-router',
+      'react',
+      'redux-thunk',
+      'redux',
+    ],
+  },
+  output: {
+    path: buildPath,
+    publicPath: '/',
+    filename: 'app-[hash].js',
+  },
+  module: {
+    rules,
+  },
+  resolve: {
+    extensions: ['.webpack-loader.js', '.web-loader.js', '.loader.js', '.js', '.jsx'],
+    modules: [
+      path.resolve(__dirname, 'node_modules'),
+      jsSourcePath,
+    ],
+  },
+  plugins,
+  devServer: {
+    contentBase: isProduction ? './build' : './source',
+    historyApiFallback: true,
+    port: 3000,
+    compress: isProduction,
+    inline: !isProduction,
+    hot: !isProduction,
+    host: '0.0.0.0',
+    stats: {
+      assets: true,
+      children: false,
+      chunks: false,
+      hash: false,
+      modules: false,
+      publicPath: false,
+      timings: true,
+      version: false,
+      warnings: true,
+      colors: {
+        green: '\u001b[32m',
+      },
+    },
+  },
 };

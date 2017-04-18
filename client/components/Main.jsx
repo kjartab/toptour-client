@@ -1,18 +1,14 @@
 import React from 'react';
 // import AppBar from './AppBar.jsx';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import ReactMapboxGl from './map/mapboxComponent';
+// import injectTapEventPlugin from 'react-tap-event-plugin';
+// import ReactMapboxGl from './map/mapboxComponent';
 import SearchBox from './Search'
-import Timer from './Timer'
-import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'; 
-import BottomNavigationExampleSimple from './BottomNav';
-// import UpperSection from './UpperSection';
-// import ProjectPage from './projects/ProjectPage.jsx';
-// import AboutSection from './about/AboutSection.jsx';
-// import ProjectSection from './projects/ProjectSection.jsx';
-// import ContactSection from './contact/ContactSection.jsx';
+// import Timer from './Timer'
+// import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'; 
+// import BottomNavigationExampleSimple from './BottomNav';
 
-injectTapEventPlugin();
+
+// injectTapEventPlugin();
 
 export default class Main extends React.Component {
 
@@ -58,11 +54,11 @@ export default class Main extends React.Component {
 
     }
 
-    renderMap() {
-        return (
-            <BottomNavigationExampleSimple/>
-        );
-    }
+    // renderMap() {
+    //     return (
+    //         <BottomNavigationExampleSimple/>
+    //     );
+    // }
 
     render() {
         return this.renderStd();
