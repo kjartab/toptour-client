@@ -19,9 +19,7 @@ export default class SearchBox extends Component {
   handleUpdateInput(value) {
     this.search(value);
   };
-
  
-
   search(value) {
     var context = this;
     return new Promise(function(resolve, reject) {
