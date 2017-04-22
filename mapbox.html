@@ -19,116 +19,25 @@
 <script>
 mapboxgl.accessToken = token;
 var map = new mapboxgl.Map({
-    container: 'map', // container id
-    // style: 'mapbox://styles/mapbox/streets-v9', //stylesheet location
-    style: 'mapbox://styles/mapbox/outdoors-v10',
-    center: [10, 60], // starting position
-    zoom: 4 // starting zoom
+    container: 'map',
+    style: 'mapbox://styles/kjartab/cj1t888ks002y2rpft8wv3d3w',
+    center: [10, 60], 
+    zoom: 4 
 });
 
-
-var simple = {
-    "version": 8,
-    "sources": {
-        "osm": {
-            "scheme": "tms",
-            "type": "vector",
-            "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:turer@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
-        }
-    },
-    "layers": [
-        {
-            "id": "geom", 
-            "type": "line",
-            "interactive": true,
-            "source" : "osm",
-            "source-layer" : "geom",
-            "paint": {
-                "line-color": "#333",
-                "line-width": {
-                    "base": 1.2,
-                    "stops": [
-                        [
-                            4,
-                            0.6
-                        ],
-                        [
-                            7,
-                            1.5
-                        ],
-                        [
-                            22,
-                            10
-                        ]
-                    ]
-                }
-            }
-        }
-    ]
-};
-var simple = {
-    "version": 8,
-    "sources": {
-        "osm": {
-            "type": "vector",
-            "tiles": ["http://tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.mvt?api_key=vector-tiles-LM25tq4"]
-        },
-        "geoserver" : {
-            "type" : "vector",
-            "scheme" : "tms",
-            "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:toptour_sane@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
-        }
-    },
-    "layers": [
-    // ,
-    // {
-    //     "id": "background",
-    //     "type": "background",
-    //     "paint": {
-    //         "background-color": "#41afa5"
-    // }
-    // }
-     {
-        "id": "water",
-        "type": "fill",
-        "source": "osm",
-        "source-layer": "water",
-        "filter": ["==", "$type", "Polygon"],
-        "paint": {
-            "fill-color": "#3887be",
-        }
-    },
-    {
-        "id": "turer",
-        "type": "line",
-        "interactive": true,
-        "source" : "geoserver",
-        "source-layer" : "toptour_sane",
-        "paint": {
-            "line-color": "#333" 
-        }
-    }]
-};
-
-// var map = new mapboxgl.Map({
-//     container: 'map',
-//     style: simple,
-//     zoom: 1,
-//     center: [-14, 35]
-// });
 map.on('load', function () {
 
     map.addSource("geoserver",{
             "type" : "vector",
             "scheme" : "tms",
-            "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:toptour_sane@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
+            "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:sane_turer5@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
         })
 
     map.addLayer({
         "id": "terrain-data",
         "type": "line", 
         "source":  "geoserver",
-        "source-layer" : "toptour_sane",
+        "source-layer" : "sane_turer5",
         "layout": {
             "line-join": "round",
             "line-cap": "round"
@@ -137,54 +46,13 @@ map.on('load', function () {
             "line-color": "#454545",
             "line-width": 3
         }
-    })
-    // map.addLayer({
-    //     "id": "terrain-data",
-    //     "type": "line",
-    //     // scheme: "tms",
-    //     "source": {
-    //         "type" : "vector",
-    //         "scheme" : "tms",
-    //         "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:toptour_sane@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
-    //     },
-    //     "source-layer" : "toptour_sane",
-    //     "layout": {
-    //         "line-join": "round",
-    //         "line-cap": "round"
-    //     },
-    //     "paint": {
-    //         "line-color": "#454545",
-    //         "line-width": 3
-    //     }
-    // });
-    // map.addLayer({
-    //     "id": "terrain-data",
-    //     "type": "line",
-    //     "source": {
-    //         type: 'vector',
-    //         url: 'mapbox://styles/mapbox/outdoors-v10'
-    //     },
-    //     "source-layer": "contour",
-    //     "layout": {
-    //         "line-join": "round",
-    //         "line-cap": "round"
-    //     },
-    //     "paint": {
-    //         "line-color": "#ff69b4",
-    //         "line-width": 1
-    //     }
-    // });
-        
-    // map.on("mousemove", "terrain-data", function(e) {
-    //     console.log(e);
-    //     // map.setFilter("state-fills-hover", ["==", "name", e.features[0].properties.name]);
-    // });
+    }) 
     map.addLayer({
         "id": "state-fills-hover",
          // "id": "terrain-data",
         "type": "line", 
         "source":  "geoserver",
-        "source-layer" : "toptour_sane",
+        "source-layer" : "sane_turer5",
         "layout": {
             "line-join": "round",
             "line-cap": "round"
@@ -198,6 +66,7 @@ map.on('load', function () {
 
 
     map.on("mousemove", "terrain-data", function(e) {
+        console.log(e);
         map.getCanvas().style.cursor = 'pointer';
         map.setFilter("state-fills-hover", ["==", "id", e.features[0].properties.id]);
     });

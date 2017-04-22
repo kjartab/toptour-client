@@ -1,6 +1,19 @@
 import React, {Component} from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 
+
+const style = {
+  'backgroundColor' : 'white',
+  'position' : 'absolute',
+  'margin' : '10px',
+  'padding' : '2px',
+  'paddingRight' : '10px',
+  'paddingLeft' : '10px',
+  'zIndex' : 1000,
+  'borderRadius' : '2px'
+}
+const conf = {text: 'navn', value: 'geojson'}
+
 /**
  * The input is used to create the `dataSource`, so the input always matches three entries.
  */
@@ -13,10 +26,14 @@ export default class SearchBox extends Component {
     };
 
     this.handleUpdateInput = this.handleUpdateInput.bind(this);
+    this.onSelectItem = this.onSelectItem.bind(this);
     this.search = this.search.bind(this);
+
   } 
 
   handleUpdateInput(value) {
+    console.log(value);
+    console.log(this);
     this.search(value);
   };
  
@@ -34,7 +51,7 @@ export default class SearchBox extends Component {
           body: JSON.stringify({
               "from" : 0, "size" : 5,
               "_source": { 
-                "includes" : ["attribs.navn"]
+                "includes" : ["attribs.navn", "attribs.geojson"]
               },
               "query" : {
                   "term" : { "attribs.navn" : value}
@@ -44,7 +61,7 @@ export default class SearchBox extends Component {
       .then(function(response) {
         return response.json()
       }).then(function(json) {
-        context.setState({'dataSource': json.hits.hits.map((hit) => { return hit._source.attribs.navn; }) });
+        context.setState({'dataSource': json.hits.hits.map((hit) => { return hit._source.attribs; }) });
       }).catch(function(ex) {
         console.log('parsing failed', ex);
       });
@@ -53,18 +70,27 @@ export default class SearchBox extends Component {
 
   }
 
+  onSelectItem(data, item) {
+    console.log("onselect", this)
+    console.log(data.geojson);
+    this.props.onSelectRoute(JSON.stringify(data.geojson));
+  } 
+
   filter() {
     return true;
   }
 
   render() {
-    
+
     return (
         <AutoComplete
+          style={style}
           hintText="Søk etter turer"
           dataSource={this.state.dataSource}
+          dataSourceConfig={ conf } 
           onUpdateInput={this.handleUpdateInput}
           filter={this.filter}
+          onNewRequest={this.onSelectItem}
         /> 
     );
   }

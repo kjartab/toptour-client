@@ -20,12 +20,19 @@ var config = {
   module: {
     rules: [
       { 
+        exclude: /(node_modules)/,
         test: /\.jsx?$/,  //Check for all js files
         use: [{
-          // exclude: /(node_modules|bower_components)/,
-          loader: 'babel-loader',
-          options: { presets: ['react', 'es2015'] }
+        // exclude: /(node_modules|bower_components)/,
+        loader: 'babel-loader',
+        options: { 
+          presets: ['react', 'es2015'] }
         }]
+      }, 
+      {
+          include: /node_modules\/mapbox-gl.*\.js$/,
+          loader: 'transform-loader?brfs-babel',
+          enforce: 'post',
       },
       {
         test: /\.(sass|scss)$/, //Check for sass or scss file names
@@ -46,7 +53,13 @@ var config = {
     contentBase: path.resolve(__dirname, './src'),  // New
   },
 
-  devtool: "eval-source-map" // Default development sourcemap
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000
+  },
+
+  devtool: 'source-maps',
+  // devtool: "eval-source-map" // Default development sourcemap
 };
 
 
