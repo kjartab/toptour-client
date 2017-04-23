@@ -1,49 +1,65 @@
-// // import React, {Component} from 'react';
-// // import AutoComplete from 'material-ui/AutoComplete';
+
+import ToptourMenuItem from './ToptourMenuItems.jsx';
+import React from 'react';
+import Drawer from 'material-ui/Drawer';
+import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
+
+import {blue500, red500, greenA200,yellow500} from 'material-ui/styles/colors';
+import SvgIcon from 'material-ui/SvgIcon';
+
+const itemStyle = {
+    width:50
+}
+
+const drawerStyle = {
+    width: 50
+}
+
+const iconStyles = {
+    marginLeft: "auto",
+    marginRight: "auto"
+};
+
+import HomeIcon from 'material-ui/svg-icons/action/home';
+import LayersIcon from 'material-ui/svg-icons/maps/layers';
+
+// const HomeIcon = (props) => (
+//   <SvgIcon {...props}>
+//     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+//   </SvgIcon>
+// );
 
 
-// // const style = {
+export default class DrawerSimpleExample extends React.Component {
 
-
-// // }
-
-// // export default class LeftMenu extends Component {
-
-
-// //     render () {
-// //         return (
-// //             <div>test</div>
-// //         );
-// //     }
-// // }
-
-
-// import React from 'react';
-// import Drawer from 'material-ui/Drawer';
-// import MenuItem from 'material-ui/MenuItem';
-// import RaisedButton from 'material-ui/RaisedButton';
-
-// export default class DrawerSimpleExample extends React.Component {
-
-//   constructor(props) {
-//     super(props);
-//     this.state = {open: false};
-//   }
+  constructor(props) {
+    super(props);
+    this.state = {open: true}; 
+    this.handleToggle = this.handleToggle.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
   
-//   handleToggle = () => this.setState({open: !this.state.open});
+  handleClick(e) {
+    console.log(e);    
+    this.props.setActiveMenu("home");
 
-//   render() {
-//     return (
-//       <div>
-//         <RaisedButton
-//           label="Toggle Drawer"
-//           onTouchTap={this.handleToggle}
-//         />
-//         <Drawer open={this.state.open}>
-//           <MenuItem>Menu Item</MenuItem>
-//           <MenuItem>Menu Item 2</MenuItem>
-//         </Drawer>
-//       </div>
-//     );
-//   }
-// }
+  }
+
+  handleToggle() {
+    this.setState({open: !this.state.open});
+  }
+  // handleToggle = () => this.setState({open: !this.state.open});
+
+  render() {
+    return (
+      <div>
+        <Drawer width={50} open={this.state.open}>
+          <ToptourMenuItem id="home" icon={HomeIcon} onItemClick={this.props.setActiveMenu} />
+          <ToptourMenuItem id="layers" icon={LayersIcon} onItemClick={this.props.setActiveMenu}/>
+          <ToptourMenuItem id="" icon={HomeIcon} onItemClick={this.props.setActiveMenu} />
+        </Drawer>
+      </div>
+    );
+  }
+}

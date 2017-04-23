@@ -9,6 +9,7 @@ const style = {
   'padding' : '2px',
   'paddingRight' : '10px',
   'paddingLeft' : '10px',
+  marginLeft: 60,
   'zIndex' : 1000,
   'borderRadius' : '2px'
 }
