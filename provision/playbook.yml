@@ -1,0 +1,13 @@
+---
+- hosts: regn
+  become: yes
+  vars:
+    app_name: toptour
+    nginx_app_config_template: "toptour.conf.j2"
+    nginx_app_domain_name: "www.toptour.no"
+    nginx_app_webroot: /var/www/{{nginx_app_domain_name}}
+    letsencrypt_email: kjartanbjorset@gmail.com
+    local_project_dir: "{{ playbook_dir.split('/')[0:-1]|join('/') }}"
+  roles:
+    # - ansible-role-nginx-certbot-app
+    - deploy
