@@ -23,13 +23,8 @@ const iconStyles = {
 
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import LayersIcon from 'material-ui/svg-icons/maps/layers';
-
-// const HomeIcon = (props) => (
-//   <SvgIcon {...props}>
-//     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-//   </SvgIcon>
-// );
-
+import FilterIcon from 'material-ui/svg-icons/content/filter-list';
+import AccountIcon from 'material-ui/svg-icons/action/account-circle';
 
 export default class DrawerSimpleExample extends React.Component {
 
@@ -49,15 +44,19 @@ export default class DrawerSimpleExample extends React.Component {
   handleToggle() {
     this.setState({open: !this.state.open});
   }
-  // handleToggle = () => this.setState({open: !this.state.open});
+
 
   render() {
     return (
       <div>
         <Drawer width={50} open={this.state.open}>
+
           <ToptourMenuItem id="home" icon={HomeIcon} onItemClick={this.props.setActiveMenu} />
-          <ToptourMenuItem id="layers" icon={LayersIcon} onItemClick={this.props.setActiveMenu}/>
-          <ToptourMenuItem id="" icon={HomeIcon} onItemClick={this.props.setActiveMenu} />
+          <ToptourMenuItem id="layers" icon={LayersIcon} onItemClick={this.props.setActiveMenu} />
+          <ToptourMenuItem id="toptourfilter" icon={FilterIcon} onItemClick={this.props.setActiveMenu} />   
+          <ToptourMenuItem id="account" icon={AccountIcon} onItemClick={this.props.setActiveMenu} />
+          
+
         </Drawer>
       </div>
     );

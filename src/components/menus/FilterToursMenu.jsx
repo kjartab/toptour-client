@@ -37,6 +37,7 @@ const style = {
   'minHeight' : 400,
   'zIndex': 1250
 }
+
 export default class FilterToursMenu extends React.Component {
 
   constructor(props) {

@@ -3,49 +3,35 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Slider from 'material-ui/Slider';
-
-const slidercontainerStyle = {
-  padding: 15
-}
-
-const SliderExampleSimple = () => (
-  <div style={slidercontainerStyle}>
-    <h1>Snølag</h1>
-
-
-    <p>Dag</p>
-    <Slider />
-    
-
-
-  </div>
-);
-
 
 const style = {
   'marginLeft' : 50,
   'minHeight' : 400,
-  'zIndex': 1250
+  'zIndex': 1250,
+  paddingLeft: 15
 }
 
-export default class FilterToursMenu extends React.Component {
+export default class AccountMenu extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {open: true}; 
+    this.state = {open: true, username : "Kjartan Bjørset"}; 
     this.handleToggle = this.handleToggle.bind(this);
   }
   
   handleToggle() {
     this.setState({open: !this.state.open});
   }
-  // handleToggle = () => this.setState({open: !this.state.open});
 
   render() {
     return (
         <Drawer containerStyle={style} width={300} open={this.state.open}>
-          <SliderExampleSimple/>
+          <h3>{this.state.username}</h3>
+
+          <p></p>
+          
+          <p>Kontoer</p>
+
         </Drawer>
       
     );
