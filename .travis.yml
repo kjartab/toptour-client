@@ -23,6 +23,6 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -av -r --delete-after --quiet $TRAVIS_BUILD_DIR/dist/ travis@www.kartan.no:/var/www/www.toptour.no/
+  script: rsync -rav --no-perms --delete-after --quiet $TRAVIS_BUILD_DIR/dist/ travis@www.kartan.no:/var/www/www.toptour.no/
   on:
     branch: master
