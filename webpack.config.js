@@ -2,7 +2,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const DashboardPlugin = require('webpack-dashboard/plugin');
+// const DashboardPlugin = require('webpack-dashboard/plugin');
 
 var config = {
   context: __dirname + '/src', // `__dirname` is root of project and `src` is source
@@ -10,7 +10,7 @@ var config = {
     app: './app.js',
   },
   plugins: [
-    new DashboardPlugin()
+    // new DashboardPlugin()
   ],
   output: {
     path: path.resolve(__dirname, './dist'),
