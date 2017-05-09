@@ -13,7 +13,7 @@ const style = {
   'zIndex' : 1000,
   'borderRadius' : '2px'
 }
-const conf = {text: 'navn', value: 'geojson'}
+const conf = {text: 'navn', value: 'navn'}
 
 /**
  * The input is used to create the `dataSource`, so the input always matches three entries.
@@ -52,7 +52,6 @@ export default class SearchBox extends Component {
           body: JSON.stringify({
               "from" : 0, "size" : 5,
               "_source": { 
-                "includes" : ["attribs.navn", "attribs.geojson"]
               },
               "query" : {
                   "term" : { "attribs.navn" : value}
@@ -62,7 +61,9 @@ export default class SearchBox extends Component {
       .then(function(response) {
         return response.json()
       }).then(function(json) {
-        context.setState({'dataSource': json.hits.hits.map((hit) => { return hit._source.attribs; }) });
+        // context.setState({'dataSource' : []})
+        context.setState({'dataSource' : json.hits.hits.map((hit) => { return hit._source.attribs })})
+        // context.setState({'dataSource': json.hits.hits.map((hit) => { var item = hit._source.attribs; item.type = hit._type; console.log(item); return type; }) });
       }).catch(function(ex) {
         console.log('parsing failed', ex);
       });
@@ -72,9 +73,8 @@ export default class SearchBox extends Component {
   }
 
   onSelectItem(data, item) {
-    console.log("onselect", this)
-    console.log(data.geojson);
-    this.props.onSelectRoute(JSON.stringify(data.geojson));
+    console.log(item, data);
+    this.props.onSelectRoute(data);
   } 
 
   filter() {

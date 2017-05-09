@@ -74,25 +74,25 @@ function removeSnowLayer() {
 
 var i = 0;
 
-const onSelectRoute = function(geojson) {
+// const onSelectRoute = function(geojson) {
 
-  map.addLayer({
-        "id": "route"+i++,
-        "type": "line",
-        "source": {
-            "type": "geojson",
-            "data": JSON.parse(geojson)
-        },
-        "layout": {
-            "line-join": "round",
-            "line-cap": "round"
-        },
-        "paint": {
-            "line-color": "#888",
-            "line-width": 8
-        }
-    });
-}
+//   map.addLayer({
+//         "id": "route"+i++,
+//         "type": "line",
+//         "source": {
+//             "type": "geojson",
+//             "data": JSON.parse(geojson)
+//         },
+//         "layout": {
+//             "line-join": "round",
+//             "line-cap": "round"
+//         },
+//         "paint": {
+//             "line-color": "#888",
+//             "line-width": 8
+//         }
+//     });
+// }
 
 
 class App extends Component {
@@ -110,6 +110,9 @@ class App extends Component {
           },
           {
             id: "tours"
+          },
+          {
+            id: "tourview"
           }
         ],
         selectedMenu : "home",
@@ -117,7 +120,18 @@ class App extends Component {
       }
       this.setActiveMenu = this.setActiveMenu.bind(this);
       this.toggleSnow = this.toggleSnow.bind(this);
+      this.onSelectRoute = this.onSelectRoute.bind(this);
     }
+
+
+    onSelectRoute(data) {
+      console.log(data);
+        this.setState({selectedRoute: data});
+        if (data) {
+          this.setActiveMenu('tourview')
+        }
+    }
+
 
     toggleSnow(event, isChecked) {
 
@@ -138,7 +152,7 @@ class App extends Component {
     }
     
     render() {
-      console.log(this.state);
+
         return (
           <div>
             <LeftMenu 
@@ -146,8 +160,13 @@ class App extends Component {
               selectedMenu={this.state.selectedMenu}
               setActiveMenu={this.setActiveMenu}
             />
-            <SearchBox onSelectRoute={onSelectRoute} /> 
-            <MenuBox selectedMenu={this.state.selectedMenu} toggleSnow={this.toggleSnow} activeSnow={this.state.snowActive} />
+            <SearchBox onSelectRoute={this.onSelectRoute} /> 
+            <MenuBox 
+              selectedMenu={this.state.selectedMenu} 
+              toggleSnow={this.toggleSnow} 
+              activeSnow={this.state.snowActive} 
+              selectedRoute={this.state.selectedRoute}
+            />
             <FloatingActionButtonExampleSimple/>
           </div>
         )

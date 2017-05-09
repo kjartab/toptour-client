@@ -57,8 +57,8 @@ var config = {
     poll: 1000
   },
 
-  devtool: 'source-maps',
-  // devtool: "eval-source-map" // Default development sourcemap
+  // devtool: 'source-maps',
+  devtool: "eval-source-map" // Default development sourcemap
 };
 
 

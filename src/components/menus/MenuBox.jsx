@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import FilterToursMenu from './FilterToursMenu.jsx'
 import MapLayerMenu from './LayersMenu.jsx'
 import AccountMenu from './AccountMenu.jsx'
+import ToptourSidebarView from './ToptourSidebarView.jsx'
 
 export default class MenuBox extends Component {
 
@@ -17,7 +18,6 @@ export default class MenuBox extends Component {
     console.log("toggle")
     this.setState({open: !this.state.open});
   }
-  // handleToggle = () => this.setState({open: !this.state.open});
 
   render() {
     var comp = null;
@@ -38,6 +38,10 @@ export default class MenuBox extends Component {
             case 'account':
                 comp = <AccountMenu />;
                 break;
+
+            case 'tourview':
+                comp = <ToptourSidebarView selectedRoute={this.props.selectedRoute} />;
+
         }
       
     return comp;
