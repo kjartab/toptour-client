@@ -27,14 +27,14 @@ map.on('load', function () {
   map.addSource("geoserver",{
       "type" : "vector",
       "scheme" : "tms",
-      "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:sane_turer5@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
+      "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:sane_turer7@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
   });
 
   map.addLayer({
       "id": "terrain-data",
       "type": "line", 
       "source":  "geoserver",
-      "source-layer" : "sane_turer5",
+      "source-layer" : "sane_turer7",
       "layout": {
           "line-join": "round",
           "line-cap": "round"
