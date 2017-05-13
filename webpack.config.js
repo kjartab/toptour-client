@@ -2,6 +2,8 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
 // const DashboardPlugin = require('webpack-dashboard/plugin');
 
 var config = {
@@ -64,8 +66,35 @@ var config = {
 
 // Check if build is running in production mode, then change the sourcemap type
 if (process.env.NODE_ENV === "production") {
+  console.log("uglify");
   config.devtool = "source-map";
 
+    // config.plugins.push(new webpack.optimize.OccurenceOrderPlugin())
+    // config.plugins.push(new webpack.DefinePlugin({
+    //   'process.env': {
+    //     'NODE_ENV': JSON.stringify('production')
+    //   }
+    // }));
+
+    config.plugins =  [
+      new webpack.DefinePlugin({ // <-- key to reducing React's size
+        'process.env': {
+          'NODE_ENV': JSON.stringify('production')
+        }
+      }),
+      // new webpack.optimize.DedupePlugin(), //dedupe similar code 
+      new webpack.optimize.UglifyJsPlugin(), //minify everything
+      new webpack.optimize.AggressiveMergingPlugin()//Merge chunks 
+    ]
+
+
+
+    // config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    //   compressor: {
+    //     warnings: false
+    //   }
+    // }));
+  // config.plugins.push(new UglifyJSPlugin());
   // Can do more here
   // JSUglify plugin
   // Offline plugin

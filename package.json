@@ -2,7 +2,7 @@
   "scripts": {
     "start": "webpack-dev-server --progress --inline --colors",
     "build": "webpack --progress --colors",
-    "install" : "webpack -p"
+    "install": "webpack -p"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -12,6 +12,7 @@
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "^2.5.1",
     "webpack-dev-server": "^2.4.5"
   },
