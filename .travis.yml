@@ -14,7 +14,6 @@ language: node_js
 node_js: 
   - "7"
 
-install: true
 
 before_deploy:
 - openssl aes-256-cbc -K $encrypted_de38f2a8db4a_key -iv $encrypted_de38f2a8db4a_iv
