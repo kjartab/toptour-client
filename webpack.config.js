@@ -66,8 +66,8 @@ var config = {
 
 // Check if build is running in production mode, then change the sourcemap type
 if (process.env.NODE_ENV === "production") {
-  console.log("uglify");
-  config.devtool = "source-map";
+    console.log("uglify");
+    config.devtool = false;
 
     // config.plugins.push(new webpack.optimize.OccurenceOrderPlugin())
     // config.plugins.push(new webpack.DefinePlugin({
@@ -76,13 +76,20 @@ if (process.env.NODE_ENV === "production") {
     //   }
     // }));
 
+  
     config.plugins =  [
       new webpack.DefinePlugin({ // <-- key to reducing React's size
         'process.env': {
           'NODE_ENV': JSON.stringify('production')
         }
       }),
-      new webpack.optimize.UglifyJsPlugin({ mangle: false }),
+      new webpack.optimize.UglifyJsPlugin({
+            'sourceMap': true,
+            'compress': {
+                warnings: false,
+                comparisons: false,  // don't optimize comparisons
+            }
+          }),
       new webpack.optimize.AggressiveMergingPlugin()//Merge chunks 
     ]
 

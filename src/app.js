@@ -27,7 +27,7 @@ map.on('load', function () {
   map.addSource("geoserver",{
       "type" : "vector",
       "scheme" : "tms",
-      "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:sane_turer7@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
+      "tiles": ["http://localhost:8383/geoserver/gwc/service/tms/1.0.0/toptour:sane_turer7@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
   });
 
   map.addLayer({
@@ -48,7 +48,7 @@ map.on('load', function () {
   map.addSource("snowraster", {
     'type': 'raster',
     'tiles': [
-        'https://maps.trd.toptour.no/geoserver/toptour/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=toptour:sd2'
+        'http://localhost:8383/geoserver/toptour/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=toptour:sd2'
     ],
     'tileSize': 256
   });
