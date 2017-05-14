@@ -82,8 +82,7 @@ if (process.env.NODE_ENV === "production") {
           'NODE_ENV': JSON.stringify('production')
         }
       }),
-      // new webpack.optimize.DedupePlugin(), //dedupe similar code 
-      new webpack.optimize.UglifyJsPlugin(), //minify everything
+      new webpack.optimize.UglifyJsPlugin({ mangle: false }),
       new webpack.optimize.AggressiveMergingPlugin()//Merge chunks 
     ]
 
