@@ -54,7 +54,7 @@ export default class SearchBox extends Component {
               "_source": { 
               },
               "query" : {
-                  "term" : { "attribs.navn" : value}
+                  "match" : { "attribs.navn" : value}
               }
           })
       })
@@ -63,7 +63,6 @@ export default class SearchBox extends Component {
       }).then(function(json) {
         // context.setState({'dataSource' : []})
         context.setState({'dataSource' : json.hits.hits.map((hit) => { return hit._source.attribs })});
-        // context.setState({'dataSource': json.hits.hits.map((hit) => { var item = hit._source.attribs; item.type = hit._type; console.log(item); return type; }) });
       }).catch(function(ex) {
         console.log('parsing failed', ex);
       });

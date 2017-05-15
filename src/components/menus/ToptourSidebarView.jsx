@@ -9,6 +9,30 @@ const style = {
   'zIndex': 1250
 }
 
+class TourDescription extends React.Component {
+
+  render() {
+    return (<p>{this.props.text}</p>)
+  }
+}
+
+class TourTitle extends React.Component {
+  render() {
+    return (<h4>{this.props.title}</h4>);
+  }
+}
+
+class TourImageSlide extends React.Component {
+  render() {
+    return (<p>Images</p>)
+  }
+}
+
+class TourShortInfo extends React.Component {
+  render () { return (<p>Tourinfo</p>) }
+}
+
+
 export default class ToptourSidebarView extends React.Component {
 
   constructor(props) {
@@ -22,10 +46,16 @@ export default class ToptourSidebarView extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return (
         <Drawer containerStyle={style} width={450} open={this.state.open}>
-          <h4>{this.props.selectedRoute.navn}</h4>
-          <p>{this.props.selectedRoute.beskrivelse}</p>
+          
+          <TourTitle title={this.props.selectedRoute.navn}></TourTitle>
+          <TourImageSlide images={this.props.selectedRoute.beskrivelse}></TourImageSlide>
+          <TourShortInfo selectedRoute={this.props.selectedRoute}></TourShortInfo>
+          <TourDescription text={this.props.selectedRoute.beskrivelse}></TourDescription>
+
+
         </Drawer>
       
     );
