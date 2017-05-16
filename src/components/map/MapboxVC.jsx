@@ -73,19 +73,19 @@ export default class AccountMenu extends React.Component {
         style: 'mapbox://styles/kjartab/cj1t888ks002y2rpft8wv3d3w'
       }); 
        map.on('load', function() {
-
+        console.log("loaded")
         
-        map.addSource("geoserver",{
+        map.addSource("toptour:eturer",{
                 "type" : "vector",
                 "scheme" : "tms",
-                "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:sane_turer8@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
+                "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:eturer@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
             })
 
         map.addLayer({
-            "id": "terrain-data",
+            "id": "test",
             "type": "line", 
-            "source":  "geoserver",
-            "source-layer" : "sane_turer8",
+            "source":  "toptour:eturer",
+            "source-layer" : "eturer",
             "layout": {
                 "line-join": "round",
                 "line-cap": "round"
@@ -117,9 +117,7 @@ export default class AccountMenu extends React.Component {
     // }
 
 
-    render() {
-        this.refreshLayers();
-        this.refreshRoute();
+    render() { 
         return (
             <div ref="map" className="fullscreenmap">
             </div>
