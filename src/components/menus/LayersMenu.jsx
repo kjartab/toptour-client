@@ -45,15 +45,7 @@ export default class MapLayerMenu extends React.Component {
         {
           id: "snow",
           name: "Snølag",
-          versions: [
-            { 
-              "datetime" : "",
-              "" : "predicted"
-            },
-            {
-              "datetime" : "",
-            }
-          ]
+          versions: this.props.snowLayers
         },
         {
           id: "satellite",
@@ -71,7 +63,7 @@ export default class MapLayerMenu extends React.Component {
 
 
   render() {
-
+    console.log("ren", this.props.snowLayers);
     return (
 
         <Drawer containerStyle={style} width={300} open={this.state.open}>

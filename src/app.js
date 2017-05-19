@@ -43,8 +43,27 @@ class App extends Component {
       this.setActiveMenu = this.setActiveMenu.bind(this);
       this.toggleSnow = this.toggleSnow.bind(this);
       this.onSelectRoute = this.onSelectRoute.bind(this);
+      this.getLayers();
     }
     
+    getLayers() { 
+      var context = this;
+      fetch("https://maps.trd.toptour.no/geoserver/rest/workspaces/snow/coveragestores.json",
+      {
+          headers: {
+            'Authorization' : 'Basic YWRtaW46Z2Vvc2VydmVy' 
+          },
+          method: "GET"
+      })
+      .then(function(response) { 
+        return response.json()
+      }).then(function(json) { 
+        context.setState({'snowLayers' : json.coverageStores.coverageStore });
+        console.log(json);
+      }).catch(function(ex) {
+        console.log('parsing failed', ex);
+      });
+    }
 
     onSelectRoute(data) { 
         this.setState({selectedRoute: data});
@@ -56,12 +75,6 @@ class App extends Component {
     toggleSnow(event, isChecked) {
 
         this.setState({ snowActive : isChecked ? true : false });
-
-        if (this.state.snowActive) {
-          removeSnowLayer();
-        } else {
-          addSnowLayer();
-        }
     }
 
     setActiveMenu(id) { 
@@ -72,7 +85,10 @@ class App extends Component {
       console.log(this.state);
         return (
           <div>
-            <MapboxVC />
+            <MapboxVC 
+              snowLayers={this.state.snowLayers}
+              snowActive={this.state.snowActive}
+            />
             <LeftMenu 
               menus={this.state.menus} 
               selectedMenu={this.state.selectedMenu}
@@ -81,7 +97,8 @@ class App extends Component {
             <SearchBox onSelectRoute={this.onSelectRoute} /> 
             <MenuBox 
               selectedMenu={this.state.selectedMenu} 
-              toggleSnow={this.toggleSnow} 
+              toggleSnow={this.toggleSnow}
+              snowLayers={this.state.snowLayers}
               activeSnow={this.state.snowActive} 
               selectedRoute={this.state.selectedRoute}
             />

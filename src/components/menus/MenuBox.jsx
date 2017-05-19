@@ -23,11 +23,12 @@ export default class MenuBox extends Component {
     var comp = null;
         console.log(this.props.selectedMenu);
         switch(this.props.selectedMenu) {
-
+          
             case 'layers':
                 comp = <MapLayerMenu 
                   toggleSnow={this.props.toggleSnow}
                   activeSnow={this.props.activeSnow}
+                  snowLayers={this.props.snowLayers}
                   />;
                 break;
             
