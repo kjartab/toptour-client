@@ -3,6 +3,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
+import DatePicker from 'material-ui/DatePicker';
 
 import Slider from 'material-ui/Slider';
 
@@ -61,22 +62,32 @@ export default class MapLayerMenu extends React.Component {
     };
   }
 
-
-  render() {
-    console.log("ren", this.props.snowLayers);
+  render() { 
     return (
 
         <Drawer containerStyle={style} width={300} open={this.state.open}>
           <h3>Kart</h3>
 
+          <div>
           <Checkbox
-            id="kk"
+            id="snowlayer"
             label="Snølag"
             onCheck={this.props.toggleSnow}
             checked={this.props.activeSnow}
             style={styles.checkbox}
           />
+          { this.props.activeSnow && 
+                <div>
+                  <DatePicker 
+                    autoOk={true}
+                    onChange={this.props.changeSnowLayerDate}
+                    hintText="Dato for snølag" 
+                    container="inline" 
+                    mode="landscape" />
+                </div>
+          }
           
+          </div>
           <Checkbox
             label="Satellitt"
             style={styles.checkbox}

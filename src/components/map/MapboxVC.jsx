@@ -60,7 +60,6 @@ export default class AccountMenu extends React.Component {
           this.map.removeLayer("selectedRoute");
         }
       }
-
     }
 
 
@@ -77,15 +76,6 @@ export default class AccountMenu extends React.Component {
                 "scheme" : "tms",
                 "tiles": ["https://maps.trd.toptour.no/geoserver/gwc/service/tms/1.0.0/toptour:eturer@EPSG:900913@pbf/{z}/{x}/{y}.pbf"]
             });
-
-        map.addSource("snowraster", {
-          'type': 'raster',
-          'tiles': [
-              'https://maps.trd.toptour.no/geoserver/snow/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=snow:workfile_sd_2016-05-19&transparent=true'
-          ],
-          'tileSize': 256
-        });
-
 
         map.addLayer({
             "id": "test",
@@ -107,26 +97,53 @@ export default class AccountMenu extends React.Component {
     }
 
 
-
-
     componentDidUpdate() {
-        console.log(this.props);
+        console.log(this.props, "update");
         this.refreshLayers();
-      this.setSelectedRoute(this.props.selectedRoute);
+        this.setSelectedRoute(this.props.selectedRoute);
     }
 
     refreshLayers() {
-        if (this.props.snowActive) {
+        console.log("changes")
+        if (this.props.snowActive && this.props.activeSnowLayer) {
 
-            this.map.addLayer({
-                'id': 'wms-test-layer',
-                'type': 'raster',
-                'source': 'snowraster',
-                'paint': {}
-            }, 'aeroway-taxiway');
-
-        } else if (this.map.getLayer('wms-test-layer')) {
-            this.map.removeLayer('wms-test-layer')
+            if (!this.map.getSource(this.props.activeSnowLayer.name)) {
+                this.map.addSource(this.props.activeSnowLayer.name, {
+                  'type': 'raster',
+                  'tiles': [
+                        'https://maps.trd.toptour.no/geoserver/snow/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=snow:' + this.props.activeSnowLayer.name + '&transparent=true'
+                        // this.props.activeSnowLayer.href
+                      // 'https://maps.trd.toptour.no/geoserver/snow/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=snow:workfile_sd_2016-05-19&transparent=true'
+                  ],
+                  'tileSize': 256
+                });
+            }
+            console.log("should render");
+            if (!this.map.getLayer("snowlayer")) {
+                 console.log("adding");
+                this.map.addLayer({
+                    'id': "snowlayer",
+                    'type': 'raster',
+                    'source': this.props.activeSnowLayer.name,
+                    'paint': {}
+                }, 'aeroway-taxiway');
+            } else {
+                console.log(this.map.getLayer("snowlayer"));
+                console.log(this.map.getLayer("snowlayer").source, this.props.activeSnowLayer.name)
+                if (this.map.getLayer("snowlayer").source !== this.props.activeSnowLayer.name) {
+                    this.map.removeLayer("snowlayer")
+                    this.map.addLayer({
+                        'id': "snowlayer",
+                        'type': 'raster',
+                        'source': this.props.activeSnowLayer.name,
+                        'paint': {}
+                    }, 'aeroway-taxiway');
+                }
+            }
+        } else if (this.props.activeSnowLayer) {
+            if (this.map.getLayer(this.props.activeSnowLayer.name)) {
+                this.map.removeLayer(this.props.activeSnowLayer.name)
+            }
         }
     }
 
