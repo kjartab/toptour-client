@@ -105,45 +105,44 @@ export default class AccountMenu extends React.Component {
 
     refreshLayers() {
         console.log("changes")
-        if (this.props.snowActive && this.props.activeSnowLayer) {
+        if (this.props.snowActive) {
 
-            if (!this.map.getSource(this.props.activeSnowLayer.name)) {
-                this.map.addSource(this.props.activeSnowLayer.name, {
-                  'type': 'raster',
-                  'tiles': [
-                        'https://maps.trd.toptour.no/geoserver/snow/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=snow:' + this.props.activeSnowLayer.name + '&transparent=true'
-                        // this.props.activeSnowLayer.href
-                      // 'https://maps.trd.toptour.no/geoserver/snow/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=snow:workfile_sd_2016-05-19&transparent=true'
-                  ],
-                  'tileSize': 256
-                });
-            }
-            console.log("should render");
-            if (!this.map.getLayer("snowlayer")) {
-                 console.log("adding");
-                this.map.addLayer({
-                    'id': "snowlayer",
-                    'type': 'raster',
-                    'source': this.props.activeSnowLayer.name,
-                    'paint': {}
-                }, 'aeroway-taxiway');
-            } else {
-                console.log(this.map.getLayer("snowlayer"));
-                console.log(this.map.getLayer("snowlayer").source, this.props.activeSnowLayer.name)
-                if (this.map.getLayer("snowlayer").source !== this.props.activeSnowLayer.name) {
-                    this.map.removeLayer("snowlayer")
+            if (this.props.activeSnowLayer) {
+
+                if (!this.map.getSource(this.props.activeSnowLayer.name)) {
+                    this.map.addSource(this.props.activeSnowLayer.name, {
+                      'type': 'raster',
+                      'tiles': [
+                            'https://maps.trd.toptour.no/geoserver/snow/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=snow:' + this.props.activeSnowLayer.name + '&transparent=true'
+                            // this.props.activeSnowLayer.href
+                          // 'https://maps.trd.toptour.no/geoserver/snow/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=snow:workfile_sd_2016-05-19&transparent=true'
+                      ],
+                      'tileSize': 256
+                    });
+                }
+
+                if (!this.map.getLayer("snowlayer")) {
                     this.map.addLayer({
                         'id': "snowlayer",
                         'type': 'raster',
                         'source': this.props.activeSnowLayer.name,
                         'paint': {}
                     }, 'aeroway-taxiway');
+                } else {
+                    if (this.map.getLayer("snowlayer").source !== this.props.activeSnowLayer.name) {
+                        this.map.removeLayer("snowlayer")
+                        this.map.addLayer({
+                            'id': "snowlayer",
+                            'type': 'raster',
+                            'source': this.props.activeSnowLayer.name,
+                            'paint': {}
+                        }, 'aeroway-taxiway');
+                    }
                 }
             }
-        } else if (this.props.activeSnowLayer) {
-            if (this.map.getLayer(this.props.activeSnowLayer.name)) {
-                this.map.removeLayer(this.props.activeSnowLayer.name)
-            }
+            
+        } else if (this.map.getLayer("snowlayer")) {
+            this.map.removeLayer("snowlayer")
         }
     }
 
