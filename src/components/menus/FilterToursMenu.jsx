@@ -27,7 +27,6 @@ const SliderExampleSimple = () => (
     <RaisedButton label="Lagre søk" primary={true}  />
     </div>
 
-
   </div>
 );
 

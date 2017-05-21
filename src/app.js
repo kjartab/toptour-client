@@ -11,7 +11,6 @@ import MenuBox from './components/menus/MenuBox.jsx'
 import MapboxVC from './components/map/MapboxVC.jsx'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import * as name from "./module1";
 import injectTapEventPlugin from 'react-tap-event-plugin'; 
 import FloatingActionButtonExampleSimple from './components/Floatingbutton.jsx'
 injectTapEventPlugin();
@@ -81,18 +80,11 @@ class App extends Component {
         }
     }
     
-    changeSnowLayerDate(event, date) {
-      console.log(event, date);
-      console.log(date.getYear());
-      console.log(date.getDay());
-      console.log(date.getMonth());
-      console.log()
+    changeSnowLayerDate(event, date) { 
       var n = "nve_sd_" + (date.getUTCFullYear()) + "-" + leftPad(date.getUTCMonth()+1) + "-" + leftPad(date.getUTCDate());
-      console.log(n);
       for (var i=0; i<this.state.snowLayers.length; i++) {
         console.log(i, this.state.snowLayers[i],this.state.snowLayers[i].name==n, n, );
         if (n === this.state.snowLayers[i].name) {
-          console.log("settings tate");
           this.setState({
             activeSnowLayer : this.state.snowLayers[i]
           })
@@ -108,7 +100,7 @@ class App extends Component {
         if (!this.state.activeSnowLayer) {
           stateAdd.activeSnowLayer = this.state.snowLayers[19]
         }
-        
+
         this.setState(stateAdd);
 
     }

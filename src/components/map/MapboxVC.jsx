@@ -14,26 +14,10 @@ export default class AccountMenu extends React.Component {
     constructor(props) {
       super(props);
       this.refreshLayers = this.refreshLayers.bind(this);
-      this.refreshRoute = this.refreshRoute.bind(this);
-      this.addLayers = this.addLayers.bind(this);
+      this.refreshRoute = this.refreshRoute.bind(this); 
       this.setSelectedRoute = this.setSelectedRoute.bind(this);
-      // this.map = this.map.bind(this);
       
     }
-
-
-    addLayers() {
-        console.log(this.state);
-        // this.map.addLayer({
-        //     'id': 'wms-test-layer',
-        //     'type': 'raster',
-        //     'source': 'snowraster',
-        //     'paint': {}
-        // }, 'aeroway-taxiway');
-
-    } 
-
-
 
     setSelectedRoute(route) {
       console.log(route);
@@ -66,7 +50,9 @@ export default class AccountMenu extends React.Component {
     componentDidMount() {
       var map = new mapboxgl.Map({
         container: this.refs.map,
-        style: 'mapbox://styles/kjartab/cj1t888ks002y2rpft8wv3d3w'
+        style: 'mapbox://styles/kjartab/cj1t888ks002y2rpft8wv3d3w',
+        center: [12, 64], // starting position
+        zoom: 4 // starting zoom
       }); 
        map.on('load', function() {
         console.log("loaded")
@@ -140,7 +126,7 @@ export default class AccountMenu extends React.Component {
                     }
                 }
             }
-            
+
         } else if (this.map.getLayer("snowlayer")) {
             this.map.removeLayer("snowlayer")
         }
