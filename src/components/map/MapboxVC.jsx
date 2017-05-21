@@ -86,6 +86,7 @@ export default class AccountMenu extends React.Component {
     componentDidUpdate() {
         console.log(this.props, "update");
         this.refreshLayers();
+        this.refreshRoute();
         this.setSelectedRoute(this.props.selectedRoute);
     }
 
@@ -133,7 +134,20 @@ export default class AccountMenu extends React.Component {
     }
 
     refreshRoute() {
+        console.log(this);
+        // var layer = this.map.getLayer("selectedRoute");
 
+        // console.log(data);
+        // if (data) {
+        //     this.map.getLayer("selectedRoute");
+        // } else {
+        //     if (this.map.getLayer(data.id)) {
+        //         this.map.removeLayer(data.id);
+        //     } else {
+
+        //     }
+
+        // }
     }
     // componentDidUpdate() {
     //   console.log(this.props);
