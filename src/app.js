@@ -56,12 +56,7 @@ class App extends Component {
     getLayers() { 
       var context = this;
       fetch("https://maps.trd.toptour.no/geoserver/rest/workspaces/snow/coveragestores.json",
-      {
-          headers: {
-            'Authorization' : 'Basic YWRtaW46Z2Vvc2VydmVy' 
-          },
-          method: "GET"
-      })
+      )
       .then(function(response) { 
         return response.json()
       }).then(function(json) { 
@@ -81,9 +76,9 @@ class App extends Component {
     }
     
     changeSnowLayerDate(event, date) { 
-      var n = "nve_sd_" + (date.getUTCFullYear()) + "-" + leftPad(date.getUTCMonth()+1) + "-" + leftPad(date.getUTCDate());
+      var n = "nve_sd_" + (date.getUTCFullYear()) + "-" + leftPad(date.getMonth()+1) + "-" + leftPad(date.getDate()+1);
+      
       for (var i=0; i<this.state.snowLayers.length; i++) {
-        console.log(i, this.state.snowLayers[i],this.state.snowLayers[i].name==n, n, );
         if (n === this.state.snowLayers[i].name) {
           this.setState({
             activeSnowLayer : this.state.snowLayers[i]
@@ -98,7 +93,7 @@ class App extends Component {
           snowActive : isChecked ? true : false
         }
         if (!this.state.activeSnowLayer) {
-          stateAdd.activeSnowLayer = this.state.snowLayers[19]
+          // stateAdd.activeSnowLayer = this.state.snowLayers[0]
         }
 
         this.setState(stateAdd);

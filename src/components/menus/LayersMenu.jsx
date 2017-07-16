@@ -40,6 +40,7 @@ export default class MapLayerMenu extends React.Component {
 
   constructor(props) {
     super(props);
+    this.onChange = this.onChange.bind(this);
     this.state = {
       open: true,
       layers: [
@@ -62,6 +63,11 @@ export default class MapLayerMenu extends React.Component {
     };
   }
 
+  onChange(event, date) {
+    console.log(date,event, date.getDate(), date.getMonth());
+    this.props.changeSnowLayerDate(event, date);
+  }
+
   render() { 
     return (
 
@@ -80,9 +86,9 @@ export default class MapLayerMenu extends React.Component {
                 <div>
                   <DatePicker 
                     autoOk={true}
-                    onChange={this.props.changeSnowLayerDate}
+                    onChange={this.onChange}
                     hintText="Dato for snølag" 
-                    container="inline" 
+                    container="inline"
                     mode="landscape" />
                 </div>
           }

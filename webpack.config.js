@@ -66,7 +66,7 @@ var config = {
 
 // Check if build is running in production mode, then change the sourcemap type
 if (process.env.NODE_ENV === "production") {
-    console.log("uglify");
+    console.log("PROD")
     config.devtool = false;
 
     // config.plugins.push(new webpack.optimize.OccurenceOrderPlugin())
