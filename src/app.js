@@ -1,20 +1,17 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom'; 
-
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
 import LeftMenu from './components/menus/LeftMenu.jsx'
 import SearchBox from './components/Search.jsx'
 import MenuBox from './components/menus/MenuBox.jsx'
-
 import MapboxVC from './components/map/MapboxVC.jsx'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import injectTapEventPlugin from 'react-tap-event-plugin'; 
 import FloatingActionButtonExampleSimple from './components/Floatingbutton.jsx'
 injectTapEventPlugin();
-
 
 const leftPad = (num) => {
   var str = "" + num

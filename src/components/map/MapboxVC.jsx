@@ -20,7 +20,7 @@ export default class AccountMenu extends React.Component {
     }
 
     setSelectedRoute(route) {
-      console.log(route);
+    
       if (route) {
 
         this.map.addLayer({
