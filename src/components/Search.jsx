@@ -61,8 +61,7 @@ export default class SearchBox extends Component {
       .then(function(response) {
         return response.json()
       }).then(function(json) {
-        // context.setState({'dataSource' : []})
-        context.setState({'dataSource' : json.hits.hits.map((hit) => { return hit._source.attribs })});
+        context.setState({'dataSource' : json.hits.hits.map((hit) => { var res = hit._source.attribs; res.geom = hit._source.geom; return res; })});
       }).catch(function(ex) {
         console.log('parsing failed', ex);
       });
@@ -72,7 +71,7 @@ export default class SearchBox extends Component {
   }
 
   onSelectItem(data, item) {
-    console.log(item, data);
+    console.log("SELECTITEM");
     this.props.onSelectRoute(data);
   } 
 

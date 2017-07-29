@@ -45,8 +45,8 @@ export default class ToptourSidebarView extends React.Component {
     this.setState({open: !this.state.open});
   }
 
-  render() {
-    console.log(this.props);
+  render() { 
+    console.log("RENDER")
     return (
         <Drawer containerStyle={style} width={450} open={this.state.open}>
           

@@ -7,21 +7,17 @@ import ToptourSidebarView from './ToptourSidebarView.jsx'
 export default class MenuBox extends Component {
 
   constructor(props) {
-    console.log("constructor")
     super(props);
-    console.log("props", props);
     this.state = {open: true}; 
     this.handleToggle = this.handleToggle.bind(this);
   }
   
   handleToggle() {
-    console.log("toggle")
     this.setState({open: !this.state.open});
   }
 
   render() {
     var comp = null;
-        console.log(this.props.selectedMenu);
         switch(this.props.selectedMenu) {
 
             case 'layers':
