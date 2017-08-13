@@ -35,7 +35,7 @@ export default class MenuBox extends Component {
                 break;
 
             case 'account':
-                comp = <AccountMenu />;
+                comp = <AccountMenu getUser={this.props.getUser} />;
                 break;
 
             case 'tourview':

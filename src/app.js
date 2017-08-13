@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
+import axios from 'axios'
 
 import LeftMenu from './components/menus/LeftMenu.jsx'
 import SearchBox from './components/Search.jsx'
@@ -47,6 +48,7 @@ class App extends Component {
       this.toggleSnow = this.toggleSnow.bind(this);
       this.onSelectRoute = this.onSelectRoute.bind(this);
       this.changeSnowLayerDate = this.changeSnowLayerDate.bind(this);
+      this.getUser = this.getUser.bind(this);
       this.getLayers();
     }
     
@@ -70,6 +72,17 @@ class App extends Component {
         if (data) {
           this.setActiveMenu('tourview')
         }
+    }
+
+    getUser() {
+      axios.get("https://api.trd.toptour.no/users/me")
+      .then((res) => {        
+        console.log(res);
+      })
+      .catch((err) => {
+        window.location.replace('https://api.trd.toptour.no/auth/login?redirect=https//www.toptour.no');
+        console.log(err);
+      }) 
     }
     
     changeSnowLayerDate(event, date) { 
@@ -129,6 +142,7 @@ class App extends Component {
               activeSnowLayer={this.state.activeSnowLayer}
               changeSnowLayerDate={this.changeSnowLayerDate}
               selectedRoute={this.state.selectedRoute}
+              getUser={this.getUser}
             />
             <FloatingActionButtonExampleSimple/>
           </div>

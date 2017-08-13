@@ -18,7 +18,7 @@ export default class AccountMenu extends React.Component {
     this.state = {open: true, username : "Kjartan Bjørset"}; 
     this.handleToggle = this.handleToggle.bind(this);
   }
-  
+
   handleToggle() {
     this.setState({open: !this.state.open});
   }
@@ -28,7 +28,7 @@ export default class AccountMenu extends React.Component {
         <Drawer containerStyle={style} width={300} open={this.state.open}>
           <h3>{this.state.username}</h3>
 
-          <p></p>
+          <button onClick={this.props.getUser}>Get user</button>
           
           <p>Kontoer</p>
 
