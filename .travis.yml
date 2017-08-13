@@ -18,7 +18,7 @@ before_install: npm install npm@5 -g
 
 install:
   - npm install
-  - npm build
+  - npm run build
   
 
 before_deploy:  
