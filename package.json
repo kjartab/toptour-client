@@ -1,8 +1,7 @@
 {
   "scripts": {
     "start": "webpack-dev-server --progress --inline --colors",
-    "build": "NODE_ENV='production' webpack --progress --colors",
-    "install": "NODE_ENV='production' webpack"
+    "build": "NODE_ENV='production' webpack --progress --colors"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -14,10 +13,11 @@
     "babel-preset-stage-2": "^6.24.1",
     "uglify-js": "^3.0.4",
     "uglifyjs-webpack-plugin": "^0.4.3",
-    "webpack": "^2.5.1",
+    "webpack": "^2.7.0",
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "@turf/turf": "^4.5.2",
     "brfs-babel": "^1.0.0",
     "mapbox-gl": "^0.37.0",
     "material-ui": "^0.18.0",
@@ -26,8 +26,10 @@
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
     "react-router": "^4.1.2",
+    "react-router-dom": "^4.1.2",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
-    "transform-loader": "^0.2.4"
+    "transform-loader": "^0.2.4",
+    "uglify": "^0.1.5"
   }
 }
