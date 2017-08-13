@@ -65,7 +65,7 @@ class App extends Component {
       });
     }
 
-    onSelectRoute(data) { 
+    onSelectRoute(data) {   
         this.setState({selectedRoute: data});
         if (data) {
           this.setActiveMenu('tourview')
@@ -94,10 +94,14 @@ class App extends Component {
         }
 
         this.setState(stateAdd);
-
     }
 
     setActiveMenu(id) { 
+      if (id === "home") {
+        this.setState({
+          selectedRoute : null
+        })
+      }
       this.setState({ selectedMenu : id}); 
     }
     
@@ -109,6 +113,7 @@ class App extends Component {
               snowLayers={this.state.snowLayers}
               snowActive={this.state.snowActive}
               activeSnowLayer={this.state.activeSnowLayer}
+              selectedRoute={this.state.selectedRoute}
             />
             <LeftMenu 
               menus={this.state.menus} 

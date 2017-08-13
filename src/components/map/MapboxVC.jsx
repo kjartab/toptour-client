@@ -16,19 +16,37 @@ export default class AccountMenu extends React.Component {
       this.refreshLayers = this.refreshLayers.bind(this);
       this.refreshRoute = this.refreshRoute.bind(this); 
       this.setSelectedRoute = this.setSelectedRoute.bind(this);
-      
+      this.cleanSelectedRoutes = this.cleanSelectedRoutes.bind(this);
+      this.state = {
+        "routeId" : null
+      }
+    }
+
+    componentDidUpdate(data) {
+      console.log(data, this.props);
+
     }
 
     setSelectedRoute(route) {
-    
+
+      console.log("do something once") 
+
       if (route) {
 
-        this.map.addLayer({
-            "id": "selectedRoute",
+        var routeId = route._id;
+
+        if (routeId != this.state.routeId) {
+          if (routeId) {
+            this.cleanSelectedRoutes();
+          }
+          var geom = JSON.parse(route.geom);
+
+          this.map.addLayer({
+            "id": routeId,
             "type": "line",
             "source": {
                 "type": "geojson",
-                "data": JSON.parse(route.geom)
+                "data": geom
             },
             "layout": {
                 "line-join": "round",
@@ -38,12 +56,35 @@ export default class AccountMenu extends React.Component {
                 "line-color": "#888",
                 "line-width": 8
             }
-        });
-      } else {
-        if (this.map.getLayer("selectedRoute")) {
-          this.map.removeLayer("selectedRoute");
+          });
+
+          this.setState({
+            "routeId" : routeId
+          });
+
+          var coordinates = geom.coordinates;
+          var bounds = coordinates.reduce(function(bounds, coord) {
+              return bounds.extend(coord);
+          }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+
+          this.map.fitBounds(bounds, {
+              padding: 50
+          });
         }
+ 
+      } else {
+        this.cleanSelectedRoutes();
       }
+    }
+
+    cleanSelectedRoutes() {
+      var routeId = this.state.routeId;  
+      if (this.map.getLayer(routeId)) {
+        this.map.removeLayer(routeId);
+        this.setState({
+          "routeId" : null
+        });
+      } 
     }
 
 
@@ -55,7 +96,7 @@ export default class AccountMenu extends React.Component {
         zoom: 4 // starting zoom
       }); 
        map.on('load', function() {
-        console.log("loaded")
+        // console.log("loaded")
         
         map.addSource("toptour:eturer",{
                 "type" : "vector",
@@ -79,7 +120,7 @@ export default class AccountMenu extends React.Component {
         }) 
       });
       this.map = map;
-      console.log("mounted")
+
     }
 
 
@@ -87,11 +128,12 @@ export default class AccountMenu extends React.Component {
         console.log(this.props, "update");
         this.refreshLayers();
         this.refreshRoute();
+
         this.setSelectedRoute(this.props.selectedRoute);
     }
 
     refreshLayers() {
-        console.log("changes")
+
         if (this.props.snowActive) {
 
             if (this.props.activeSnowLayer) {
@@ -134,7 +176,7 @@ export default class AccountMenu extends React.Component {
     }
 
     refreshRoute() {
-        console.log(this);
+        // console.log(this);
         // var layer = this.map.getLayer("selectedRoute");
 
         // console.log(data);
