@@ -75,7 +75,7 @@ class App extends Component {
     }
 
     getUser() {
-      axios.get("https://api.trd.toptour.no/users/me")
+      axios.get("https://api.trd.toptour.no/users/me",{withCredentials:true})
       .then((res) => {        
         console.log(res);
       })
