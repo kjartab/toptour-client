@@ -1,15 +1,16 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import todoApp from './reducers'
-import App from './components/App'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App.jsx';
 
-let store = createStore(todoApp);
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import injectTapEventPlugin from 'react-tap-event-plugin';  
+injectTapEventPlugin();
 
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-)
+render((
+  <BrowserRouter>
+    <MuiThemeProvider>
+      <App />
+    </MuiThemeProvider>
+  </BrowserRouter>
+), document.getElementById('root'));

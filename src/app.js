@@ -82,7 +82,7 @@ class App extends Component {
       .catch((err) => {
         window.location.replace('https://api.trd.toptour.no/auth/login?redirect=https//www.toptour.no');
         console.log(err);
-      }) 
+      })
     }
     
     changeSnowLayerDate(event, date) { 

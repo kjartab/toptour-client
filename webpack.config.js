@@ -9,7 +9,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 var config = {
   context: __dirname + '/src', // `__dirname` is root of project and `src` is source
   entry: {
-    app: './app.js',
+    app: './index.js',
   },
   plugins: [
     // new DashboardPlugin()
