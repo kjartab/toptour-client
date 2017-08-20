@@ -1,3 +1,5 @@
+import React from 'react'
+
 class EnsureLoggedInContainer extends React.Component {
   componentDidMount() {
     const { dispatch, currentURL } = this.props

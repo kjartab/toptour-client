@@ -13,6 +13,7 @@ const style = {
   'zIndex' : 1000,
   'borderRadius' : '2px'
 }
+
 const conf = {text: 'navn', value: 'navn'}
 
 /**
