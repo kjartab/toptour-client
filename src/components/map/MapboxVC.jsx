@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import mapboxgl from 'mapbox-gl';  
 
 
+
 mapboxgl.accessToken = 'pk.eyJ1Ijoia2phcnRhYiIsImEiOiJjajFhaDJjeWYwMDM2MzNuNW9qaHY1Y2ljIn0.GXGL6PYl_oEw4kRmQw5uCQ';
 
 
-
-
 export default class AccountMenu extends React.Component {
+
 
 
     constructor(props) {
@@ -24,7 +24,6 @@ export default class AccountMenu extends React.Component {
 
     componentDidUpdate(data) {
       console.log(data, this.props);
-
     }
 
     setSelectedRoute(route) {

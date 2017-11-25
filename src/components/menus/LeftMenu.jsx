@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import {blue500, red500, greenA200,yellow500} from 'material-ui/styles/colors';
 import SvgIcon from 'material-ui/SvgIcon';
+import { Link } from 'react-router-dom';
 
 const itemStyle = {
     width:50
@@ -50,6 +51,7 @@ export default class DrawerSimpleExample extends React.Component {
           <ToptourMenuItem id="account" icon={AccountIcon} onItemClick={this.props.setActiveMenu} />
           
 
+            <Link to='/login'>Login</Link> 
         </Drawer>
       </div>
     );

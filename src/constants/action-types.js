@@ -1,6 +1,9 @@
-export const ADD_RECIPE = 'ADD_RECIPE';
-export const ADD_INGREDIENT = 'ADD_INGREDIENT';
-export const SET_RECIPES = 'SET_RECIPES';
-export const FETCH_RECIPES = 'FETCH_RECIPES';
+// export const ADD_RECIPE = 'ADD_RECIPE';
+// export const ADD_INGREDIENT = 'ADD_INGREDIENT';
+// export const SET_RECIPES = 'SET_RECIPES';
+// export const FETCH_RECIPES = 'FETCH_RECIPES';
 
 export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
+
+export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
+

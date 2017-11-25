@@ -20,8 +20,27 @@ const leftPad = (num) => {
   return pad.substring(0, pad.length - str.length) + str;
 }
 
+import { connect } from 'react-redux'
 
-export default class ToptourMap extends Component {
+const mapStateToProps = (state, ownProps) => {
+  return {
+    active: ownProps.filter === state.visibilityFilter
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    onClick: () => {
+      // dispatch()
+      // dispatch(setVisibilityFilter(ownProps.filter))
+    }
+  }
+}
+
+// const apiUrl = "https://api.trd.toptour.no";
+const apiUrl = "http://localhost:3010";
+
+class ToptourMap extends Component {
 
     constructor() {
       super();
@@ -76,12 +95,13 @@ export default class ToptourMap extends Component {
     }
 
     getUser() {
-      axios.get("https://api.trd.toptour.no/users/me",{withCredentials:true})
+      axios.get(apiUrl + "/users/me",{withCredentials:true})
       .then((res) => {        
         console.log(res);
       })
       .catch((err) => {
-        window.location.replace('https://api.trd.toptour.no/auth/login?redirect=https//www.toptour.no');
+        console.log(err)
+;        window.location.replace(apiUrl + '/auth/login?redirect=https//www.toptour.no');
         console.log(err);
       })
     }
@@ -120,7 +140,7 @@ export default class ToptourMap extends Component {
     }
     
     render() {
-      console.log(this.state);
+      console.log(this.state, this);
         return (
           <div>
             <MapboxVC 
@@ -150,3 +170,5 @@ export default class ToptourMap extends Component {
         )
       }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(ToptourMap);

@@ -22,12 +22,12 @@ var config = {
     rules: [
       { 
         exclude: /(node_modules)/,
-        test: /\.jsx?$/,  //Check for all js files
+        test: /\.jsx?$/,
         use: [{
         // exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         options: { 
-          presets: ['react', 'es2015', 'es2017'] }
+          presets: ['react', 'es2015', 'es2017', 'stage-2'] }
         }]
       }, 
       {
@@ -48,6 +48,9 @@ var config = {
         loader: "json-loader"  //JSON loader
       }
     ]
+  },
+  resolve: {
+    extensions: ['.js', '.jsx']
   },
   //To run development server
   devServer: {

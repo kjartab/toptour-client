@@ -1,29 +1,32 @@
-import React, {Component} from 'react';
+// import React from 'react' 
+// import Main from './Main.jsx'
 
-class App extends Component {
+import React from 'react'
+import Footer from './Footer'
+import AddTodo from '../containers/AddTodo'
+import VisibleTodoList from '../containers/VisibleTodoList'
 
-  componentDidUpdate(prevProps) {
-    const { dispatch, redirectUrl } = this.props
-    const isLoggingOut = prevProps.isLoggedIn && !this.props.isLoggedIn
-    const isLoggingIn = !prevProps.isLoggedIn && this.props.isLoggedIn
+const App = () => (
+  <div>
+    <AddTodo />
+    <VisibleTodoList />
+    <Footer />
+  </div>
+)
 
-    if (isLoggingIn) {
-      dispatch(navigateTo(redirectUrl))
-    } else if (isLoggingOut) {
-      // do any kind of cleanup or post-logout redirection here
-    }
-  }
+export default App
 
-  render() {
-    return this.props.children
-  }
-}
+// class App extends React.Component {
+    
 
-function mapStateToProps(state) {
-  return {
-    isLoggedIn: state.loggedIn,
-    redirectUrl: state.redirectUrl
-  }
-}
+//     render() {
+//         return (
+//         <div>
+//             <Main />
+//         </div>
+//         )
 
-export default connect(mapStateToProps)(App)
+//     }
+// }
+
+// export default App
