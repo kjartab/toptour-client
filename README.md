@@ -1,0 +1,1 @@
+docker run -p 3000:3000 -v C:\Users\kjabjo\projects\toptourcollection\toptour-apps\toptour-client\frontend\src:\frontend\src 
